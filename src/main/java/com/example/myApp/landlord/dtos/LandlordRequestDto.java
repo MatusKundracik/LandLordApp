@@ -20,4 +20,6 @@ public class LandlordRequestDto {
     private String postalCode;
     private String country;
     private String tin;
+    private String phoneNumber;
 }
+

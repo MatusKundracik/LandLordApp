@@ -19,6 +19,8 @@ public class LandlordMapper {
                 .postalCode(landlord.getPostalCode())
                 .country(landlord.getCountry())
                 .tin(landlord.getTin())
+                .phoneNumber(landlord.getPhoneNumber())
+                .email(landlord.getUser() != null ? landlord.getUser().getEmail() : null)
                 .build();
     }
 
@@ -32,6 +34,8 @@ public class LandlordMapper {
                 .postalCode(dto.getPostalCode())
                 .country(dto.getCountry())
                 .tin(dto.getTin())
+                .phoneNumber(dto.getPhoneNumber())
                 .build();
     }
 }
+

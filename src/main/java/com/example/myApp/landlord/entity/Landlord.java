@@ -1,5 +1,6 @@
 package com.example.myApp.landlord.entity;
 
+import com.example.myApp.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,4 +26,9 @@ public class Landlord {
     private String postalCode;
     private String country;
     private String tin;
+    private String phoneNumber;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

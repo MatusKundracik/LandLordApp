@@ -28,10 +28,10 @@ public class LandlordController {
         return ResponseEntity.ok(landlordService.getLandlordById(id));
     }
 
-    @PostMapping
-    public ResponseEntity<LandlordResponseDto> createLandlord(@RequestBody LandlordRequestDto dto) {
-        return ResponseEntity.ok(landlordService.createLandlord(dto));
-    }
+//    @PostMapping
+//    public ResponseEntity<LandlordResponseDto> createLandlord(@RequestBody LandlordRequestDto dto) {
+//        return ResponseEntity.ok(landlordService.createLandlord(dto));
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<LandlordResponseDto> updateLandlord(@PathVariable Long id, @RequestBody LandlordRequestDto dto) {
