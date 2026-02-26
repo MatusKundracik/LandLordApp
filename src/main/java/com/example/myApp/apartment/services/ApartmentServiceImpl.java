@@ -6,9 +6,7 @@ import com.example.myApp.apartment.entity.Apartment;
 import com.example.myApp.apartment.mapper.ApartmentMapper;
 import com.example.myApp.apartment.repository.ApartmentRepository;
 import com.example.myApp.landlord.entity.Landlord;
-import com.example.myApp.landlord.repository.LandlordRepository;
-import com.example.myApp.user.entity.User;
-import com.example.myApp.user.repository.UserRepository;
+import com.example.myApp.landlord.services.LandlordService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -19,33 +17,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ApartmentServiceImpl implements ApartmentService {
 
-  private final UserRepository userRepository;
-
   private final ApartmentRepository apartmentRepository;
-
   private final ApartmentMapper apartmentMapper;
-  private final LandlordRepository landlordRepository;
+  private final LandlordService landlordService;
 
   @Override
   public ApartmentResponseDto createApartment(ApartmentRequestDto apartmentRequestDto) {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-    User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    Landlord landlord = landlordService.getLandlordByEmail(email);
 
-    Landlord landlord =
-        landlordRepository
-            .findByUser(user)
-            .orElseThrow(() -> new RuntimeException("Landlord not found"));
-
-    Apartment apartment = new Apartment();
-    apartment = apartmentMapper.toEntity(apartmentRequestDto);
+    Apartment apartment = apartmentMapper.toEntity(apartmentRequestDto);
     apartment.setLandlord(landlord);
 
     Apartment saved = apartmentRepository.save(apartment);
-
-    ApartmentResponseDto response = new ApartmentResponseDto();
-    response = apartmentMapper.toDto(apartment);
 
     return apartmentMapper.toDto(saved);
   }
@@ -54,13 +39,7 @@ public class ApartmentServiceImpl implements ApartmentService {
   public ApartmentResponseDto getApartmentById(long id) {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-    User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-
-    Landlord landlord =
-        landlordRepository
-            .findByUser(user)
-            .orElseThrow(() -> new RuntimeException("Landlord not found"));
+    Landlord landlord = landlordService.getLandlordByEmail(email);
 
     Apartment apartment =
         apartmentRepository
@@ -78,13 +57,7 @@ public class ApartmentServiceImpl implements ApartmentService {
   public List<ApartmentResponseDto> getAllApartmentsByLandlord() {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-    User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-
-    Landlord landlord =
-        landlordRepository
-            .findByUser(user)
-            .orElseThrow(() -> new RuntimeException("Landlord not found"));
+    Landlord landlord = landlordService.getLandlordByEmail(email);
 
     return apartmentRepository.getAllApartmentsByLandlord(landlord).stream()
         .map(apartmentMapper::toDto)
@@ -96,13 +69,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-    User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-
-    Landlord landlord =
-        landlordRepository
-            .findByUser(user)
-            .orElseThrow(() -> new RuntimeException("Landlord not found"));
+    Landlord landlord = landlordService.getLandlordByEmail(email);
 
     Apartment apartment =
         apartmentRepository
@@ -135,20 +102,14 @@ public class ApartmentServiceImpl implements ApartmentService {
       apartment.setUnitType(apartmentRequestDto.getUnitType());
     apartmentRepository.save(apartment);
 
-    return apartmentMapper.toDto(apartment);
+    return apartmentMapper.toDto(apartmentRepository.save(apartment));
   }
 
   @Override
   public void deleteApartment(long id) {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-    User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-
-    Landlord landlord =
-        landlordRepository
-            .findByUser(user)
-            .orElseThrow(() -> new RuntimeException("Landlord not found"));
+    Landlord landlord = landlordService.getLandlordByEmail(email);
 
     Apartment apartment =
         apartmentRepository

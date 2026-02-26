@@ -7,49 +7,48 @@ import com.example.myApp.rentalAgreement.dtos.RentalAgreementResponseDto;
 import com.example.myApp.rentalAgreement.entity.ContractStatus;
 import com.example.myApp.rentalAgreement.entity.RentalAgreement;
 import com.example.myApp.tenant.entity.Tenant;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RentalAgreementMapper {
-    public static RentalAgreement toEntity(
-            RentalAgreementRequestDto request,
-            Apartment apartment,
-            Tenant tenant,
-            Landlord landlord) {
+  public RentalAgreement toEntity(
+      RentalAgreementRequestDto request, Apartment apartment, Tenant tenant, Landlord landlord) {
 
-        return RentalAgreement.builder()
-                .startDate(request.getStartDate())
-                .endDate(request.getEndDate())
-                .rentAmount(request.getRentAmount())
-                .utilitiesDeposit(request.getUtilitiesDeposit())
-                .securityDeposit(request.getSecurityDeposit())
-                .paymentDayOfMonth(request.getPaymentDayOfMonth())
-                .iban(request.getIban())
-                .penaltyRatePerDay(request.getPenaltyRatePerDay())
-                .signedDate(request.getSignedDate())
-                .status(ContractStatus.ACTIVE)
-                .apartment(apartment)
-                .tenant(tenant)
-                .landlord(landlord)
-                .build();
-    }
+    return RentalAgreement.builder()
+        .startDate(request.getStartDate())
+        .endDate(request.getEndDate())
+        .rentAmount(request.getRentAmount())
+        .utilitiesDeposit(request.getUtilitiesDeposit())
+        .securityDeposit(request.getSecurityDeposit())
+        .paymentDayOfMonth(request.getPaymentDayOfMonth())
+        .iban(request.getIban())
+        .penaltyRatePerDay(request.getPenaltyRatePerDay())
+        .signedDate(request.getSignedDate())
+        .status(ContractStatus.ACTIVE)
+        .apartment(apartment)
+        .tenant(tenant)
+        .landlord(landlord)
+        .build();
+  }
 
-    public static RentalAgreementResponseDto toDto(RentalAgreement agreement) {
-        return RentalAgreementResponseDto.builder()
-                .id(agreement.getId())
-                .apartmentId(agreement.getApartment().getId())
-                .tenantId(agreement.getTenant().getId())
-                .landlordId(agreement.getLandlord().getId())
-                .startDate(agreement.getStartDate())
-                .endDate(agreement.getEndDate())
-                .rentAmount(agreement.getRentAmount())
-                .utilitiesDeposit(agreement.getUtilitiesDeposit())
-                .securityDeposit(agreement.getSecurityDeposit())
-                .paymentDayOfMonth(agreement.getPaymentDayOfMonth())
-                .iban(agreement.getIban())
-                .penaltyRatePerDay(agreement.getPenaltyRatePerDay())
-                .signedDate(agreement.getSignedDate())
-                .status(agreement.getStatus())
-                .createdAt(agreement.getCreatedAt())
-                .updatedAt(agreement.getUpdatedAt())
-                .build();
-    }
+  public RentalAgreementResponseDto toDto(RentalAgreement agreement) {
+    return RentalAgreementResponseDto.builder()
+        .id(agreement.getId())
+        .apartmentId(agreement.getApartment().getId())
+        .tenantId(agreement.getTenant().getId())
+        .landlordId(agreement.getLandlord().getId())
+        .startDate(agreement.getStartDate())
+        .endDate(agreement.getEndDate())
+        .rentAmount(agreement.getRentAmount())
+        .utilitiesDeposit(agreement.getUtilitiesDeposit())
+        .securityDeposit(agreement.getSecurityDeposit())
+        .paymentDayOfMonth(agreement.getPaymentDayOfMonth())
+        .iban(agreement.getIban())
+        .penaltyRatePerDay(agreement.getPenaltyRatePerDay())
+        .signedDate(agreement.getSignedDate())
+        .status(agreement.getStatus())
+        .createdAt(agreement.getCreatedAt())
+        .updatedAt(agreement.getUpdatedAt())
+        .build();
+  }
 }
