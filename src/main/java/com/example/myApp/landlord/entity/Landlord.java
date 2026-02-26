@@ -1,5 +1,6 @@
 package com.example.myApp.landlord.entity;
 
+import com.example.myApp.shared.AuditableEntity;
 import com.example.myApp.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -11,11 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Landlord {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+public class Landlord extends AuditableEntity {
 
   private String name;
   private String surname;

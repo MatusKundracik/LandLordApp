@@ -11,10 +11,8 @@ import com.example.myApp.landlord.entity.Landlord;
 import com.example.myApp.landlord.repository.LandlordRepository;
 import com.example.myApp.user.entity.User;
 import com.example.myApp.user.repository.UserRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,99 +21,98 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-    private final ItemRepository itemRepository;
-    private final ApartmentRepository apartmentRepository;
-    private final LandlordRepository landlordRepository;
-    private final UserRepository userRepository;
-    private final ItemMapper itemMapper;
+  private final ItemRepository itemRepository;
+  private final ApartmentRepository apartmentRepository;
+  private final LandlordRepository landlordRepository;
+  private final UserRepository userRepository;
+  private final ItemMapper itemMapper;
 
-    private Landlord getAuthenticatedLandlord() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user =
-                userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        return landlordRepository
-                .findByUser(user)
-                .orElseThrow(() -> new RuntimeException("Landlord not found"));
+  private Landlord getAuthenticatedLandlord() {
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user =
+        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    return landlordRepository
+        .findByUser(user)
+        .orElseThrow(() -> new RuntimeException("Landlord not found"));
+  }
+
+  private Apartment getApartmentForLandlord(long apartmentId, Landlord landlord) {
+    Apartment apartment =
+        apartmentRepository
+            .findById(apartmentId)
+            .orElseThrow(() -> new RuntimeException("Apartment not found"));
+    if (!apartment.getLandlord().getId().equals(landlord.getId())) {
+      throw new RuntimeException("Access denied");
+    }
+    return apartment;
+  }
+
+  @Override
+  public ItemResponseDto createItem(ItemRequestDto itemRequestDto) {
+    Landlord landlord = getAuthenticatedLandlord();
+    Apartment apartment = getApartmentForLandlord(itemRequestDto.getApartmentId(), landlord);
+
+    Item item = itemMapper.toEntity(itemRequestDto);
+    item.setApartment(apartment);
+
+    return itemMapper.toDto(itemRepository.save(item));
+  }
+
+  @Override
+  public ItemResponseDto getItemById(long id) { // ← Long → long
+    Landlord landlord = getAuthenticatedLandlord();
+
+    Item item =
+        itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+
+    if (!item.getApartment().getLandlord().getId().equals(landlord.getId())) {
+      throw new RuntimeException("Access denied");
     }
 
-    private Apartment getApartmentForLandlord(long apartmentId, Landlord landlord) {
-        Apartment apartment =
-                apartmentRepository
-                        .findById(apartmentId)
-                        .orElseThrow(() -> new RuntimeException("Apartment not found"));
-        if (!apartment.getLandlord().getId().equals(landlord.getId())) {
-            throw new RuntimeException("Access denied");
-        }
-        return apartment;
+    return itemMapper.toDto(item);
+  }
+
+  @Override
+  public List<ItemResponseDto> getAllItemsByApartment(long apartmentId) {
+    Landlord landlord = getAuthenticatedLandlord();
+    Apartment apartment = getApartmentForLandlord(apartmentId, landlord);
+
+    return itemRepository.findAllByApartment(apartment).stream()
+        .map(itemMapper::toDto)
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public ItemResponseDto updateItem(long id, ItemRequestDto itemRequestDto) {
+    Landlord landlord = getAuthenticatedLandlord();
+
+    Item item =
+        itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+
+    if (!item.getApartment().getLandlord().getId().equals(landlord.getId())) {
+      throw new RuntimeException("Access denied");
     }
 
-    @Override
-    public ItemResponseDto createItem(ItemRequestDto itemRequestDto) {
-        Landlord landlord = getAuthenticatedLandlord();
-        Apartment apartment = getApartmentForLandlord(itemRequestDto.getApartmentId(), landlord);
+    if (itemRequestDto.getName() != null) item.setName(itemRequestDto.getName());
+    if (itemRequestDto.getDescription() != null)
+      item.setDescription(itemRequestDto.getDescription());
+    if (itemRequestDto.getQuantity() != null) item.setQuantity(itemRequestDto.getQuantity());
+    if (itemRequestDto.getValue() != null) item.setValue(itemRequestDto.getValue());
 
-        Item item = itemMapper.toEntity(itemRequestDto);
-        item.setApartment(apartment);
+    return itemMapper.toDto(itemRepository.save(item));
+  }
 
-        return itemMapper.toDto(itemRepository.save(item));
+  @Override
+  public void deleteItem(long id) {
+    Landlord landlord = getAuthenticatedLandlord();
+
+    Item item =
+        itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+
+    if (!item.getApartment().getLandlord().getId().equals(landlord.getId())) {
+      throw new RuntimeException("Access denied");
     }
 
-    @Override
-    public ItemResponseDto getItemById(long id) {    // ← Long → long
-        Landlord landlord = getAuthenticatedLandlord();
-
-        Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item not found"));
-
-        if (!item.getApartment().getLandlord().getId().equals(landlord.getId())) {
-            throw new RuntimeException("Access denied");
-        }
-
-        return itemMapper.toDto(item);
-    }
-
-
-    @Override
-    public List<ItemResponseDto> getAllItemsByApartment(long apartmentId) {
-        Landlord landlord = getAuthenticatedLandlord();
-        Apartment apartment = getApartmentForLandlord(apartmentId, landlord);
-
-        return itemRepository.findAllByApartment(apartment).stream()
-                .map(itemMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public ItemResponseDto updateItem(long id, ItemRequestDto itemRequestDto) {
-        Landlord landlord = getAuthenticatedLandlord();
-
-        Item item =
-                itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
-
-        if (!item.getApartment().getLandlord().getId().equals(landlord.getId())) {
-            throw new RuntimeException("Access denied");
-        }
-
-        if (itemRequestDto.getName() != null) item.setName(itemRequestDto.getName());
-        if (itemRequestDto.getDescription() != null)
-            item.setDescription(itemRequestDto.getDescription());
-        if (itemRequestDto.getQuantity() != null) item.setQuantity(itemRequestDto.getQuantity());
-        if (itemRequestDto.getValue() != null) item.setValue(itemRequestDto.getValue());
-
-        return itemMapper.toDto(itemRepository.save(item));
-    }
-
-    @Override
-    public void deleteItem(long id) {
-        Landlord landlord = getAuthenticatedLandlord();
-
-        Item item =
-                itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
-
-        if (!item.getApartment().getLandlord().getId().equals(landlord.getId())) {
-            throw new RuntimeException("Access denied");
-        }
-
-        itemRepository.delete(item);
-    }
+    itemRepository.delete(item);
+  }
 }

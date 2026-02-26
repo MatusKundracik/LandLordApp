@@ -1,8 +1,8 @@
 package com.example.myApp.apartment.entity;
 
 import com.example.myApp.landlord.entity.Landlord;
+import com.example.myApp.shared.AuditableEntity;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,10 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Apartment {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+public class Apartment extends AuditableEntity {
 
   private String street;
   private String streetNumber;
@@ -25,7 +22,7 @@ public class Apartment {
   private String postalCode;
   private String apartmentNumber; // "64"
   private Integer floor; // 4
-    private Double areaSqm;
+  private Double areaSqm;
   private String buildingRegNumber; // Súpisné číslo: "1672"
   private String cadastralArea; // "Letná"
   private String titleDeedNumber; // LV: "12162"

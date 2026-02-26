@@ -3,6 +3,7 @@ package com.example.myApp.auth.controller;
 import com.example.myApp.auth.dto.LandlordRegisterRequest;
 import com.example.myApp.auth.dto.LoginRequest;
 import com.example.myApp.auth.dto.LoginResponse;
+import com.example.myApp.auth.dto.TenantRegisterRequest;
 import com.example.myApp.auth.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,11 @@ public class AuthController {
   public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
     LoginResponse response = authService.login(request);
     return ResponseEntity.ok(response);
+  }
+
+  @PostMapping("/register/tenant")
+  public ResponseEntity<String> registerTenant(@Valid @RequestBody TenantRegisterRequest request) {
+    authService.registerTenant(request);
+    return ResponseEntity.ok("Tenant registered successfully");
   }
 }

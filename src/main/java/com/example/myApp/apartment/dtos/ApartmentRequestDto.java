@@ -1,7 +1,6 @@
 package com.example.myApp.apartment.dtos;
 
 import com.example.myApp.apartment.entity.UnitType;
-import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

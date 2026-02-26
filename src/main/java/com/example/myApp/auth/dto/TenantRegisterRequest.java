@@ -4,12 +4,17 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TenantRegisterRequest {
 
-  // User polia
   @NotBlank(message = "Email is required")
   @Email(message = "Invalid email format")
   private String email;
@@ -18,7 +23,6 @@ public class TenantRegisterRequest {
   @Size(min = 6, message = "Password must be at least 6 characters")
   private String password;
 
-  // Tenant polia
   @NotBlank(message = "Name is required")
   private String name;
 
@@ -26,7 +30,6 @@ public class TenantRegisterRequest {
   private String surname;
 
   private LocalDate dateOfBirth;
-
   private String street;
   private String streetNumber;
   private String city;
