@@ -3,7 +3,6 @@ package com.example.myApp.rentalAgreement.controller;
 import com.example.myApp.rentalAgreement.dtos.RentalAgreementRequestDto;
 import com.example.myApp.rentalAgreement.dtos.RentalAgreementResponseDto;
 import com.example.myApp.rentalAgreement.services.RentalAgreementService;
-import com.example.myApp.rentalAgreement.services.RentalAgreementServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +44,7 @@ public class RentalAgreementController {
     @GetMapping
     public ResponseEntity<List<RentalAgreementResponseDto>> getRentalAgreements(
             @AuthenticationPrincipal String email) {
-        return ResponseEntity.ok(rentalAgreementService.getRentalAgreements(email));
+        return ResponseEntity.ok(rentalAgreementService.getRentalAgreementsByLandlord(email));
     }
 
     @DeleteMapping("/{id}")
@@ -54,6 +53,12 @@ public class RentalAgreementController {
             @AuthenticationPrincipal String email) {
         rentalAgreementService.deleteRentalAgreement(id, email);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/my-agreements")
+    public ResponseEntity<List<RentalAgreementResponseDto>> getMyAgreements(
+            @AuthenticationPrincipal String email) {
+        return ResponseEntity.ok(rentalAgreementService.getRentalAgreementsByTenant(email));
     }
 }
 

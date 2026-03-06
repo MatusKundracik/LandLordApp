@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,9 +27,9 @@ public class ItemController {
     return ResponseEntity.ok(itemService.getItemById(id));
   }
 
-  @GetMapping("/{apartmentId}")
+  @GetMapping("/apartment/{apartmentId}")
   public ResponseEntity<List<ItemResponseDto>> getAllItemsByApartment(
-      @RequestParam long apartmentId) {
+      @PathVariable long apartmentId) {
     return ResponseEntity.ok(itemService.getAllItemsByApartment(apartmentId));
   }
 
@@ -43,4 +44,12 @@ public class ItemController {
     itemService.deleteItem(id);
     return ResponseEntity.noContent().build();
   }
+
+    @GetMapping("/apartment/{apartmentId}/my-items")
+    public ResponseEntity<List<ItemResponseDto>> getAllItemsForTenantByApartment(
+            @PathVariable long apartmentId,
+            @AuthenticationPrincipal String email) {
+        return ResponseEntity.ok(itemService.getAllItemsForTenantByApartment(apartmentId, email));
+    }
+
 }
