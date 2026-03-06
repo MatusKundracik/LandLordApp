@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RentalAgreementServiceImpl {
+public class RentalAgreementServiceImpl implements RentalAgreementService {
 
   private final RentalAgreementMapper rentalAgreementMapper;
 
@@ -106,7 +106,7 @@ public class RentalAgreementServiceImpl {
         .collect(Collectors.toList());
   }
 
-  void deleteRentalAgreement(long id, String email) {
+  public void deleteRentalAgreement(long id, String email) {
 
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
