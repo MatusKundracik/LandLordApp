@@ -1,6 +1,5 @@
 package com.example.myApp.tenant.services;
 
-import com.example.myApp.landlord.entity.Landlord;
 import com.example.myApp.tenant.dtos.TenantRequestDto;
 import com.example.myApp.tenant.dtos.TenantResponseDto;
 import com.example.myApp.tenant.entity.Tenant;
@@ -70,12 +69,11 @@ public class TenantServiceImpl implements TenantService {
     userRepository.delete(user);
   }
 
-
-    public Tenant getTenantByEmail(String email) {
-        User user =
-                userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        return tenantRepository
-                .findByUserId(user.getId())
-                .orElseThrow(() -> new RuntimeException("Tenant not found"));
-    }
+  public Tenant getTenantByEmail(String email) {
+    User user =
+        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    return tenantRepository
+        .findByUserId(user.getId())
+        .orElseThrow(() -> new RuntimeException("Tenant not found"));
+  }
 }

@@ -45,11 +45,9 @@ public class ItemController {
     return ResponseEntity.noContent().build();
   }
 
-    @GetMapping("/apartment/{apartmentId}/my-items")
-    public ResponseEntity<List<ItemResponseDto>> getAllItemsForTenantByApartment(
-            @PathVariable long apartmentId,
-            @AuthenticationPrincipal String email) {
-        return ResponseEntity.ok(itemService.getAllItemsForTenantByApartment(apartmentId, email));
-    }
-
+  @GetMapping("/apartment/{apartmentId}/my-items")
+  public ResponseEntity<List<ItemResponseDto>> getAllItemsForTenantByApartment(
+      @PathVariable long apartmentId, @AuthenticationPrincipal String email) {
+    return ResponseEntity.ok(itemService.getAllItemsForTenantByApartment(apartmentId, email));
+  }
 }

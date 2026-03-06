@@ -31,9 +31,9 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
   private final ApartmentRepository apartmentRepository;
   private final TenantRepository tenantRepository;
   private final LandlordService landlordService;
-    private final TenantService tenantService;
+  private final TenantService tenantService;
 
-    public RentalAgreementResponseDto createRentalAgreement(
+  public RentalAgreementResponseDto createRentalAgreement(
       RentalAgreementRequestDto requestDto, String email) {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
@@ -123,12 +123,12 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     rentalAgreementRepository.deleteById(id);
   }
 
-    @Override
-    public List<RentalAgreementResponseDto> getRentalAgreementsByTenant(String email) {
-        Tenant tenant = tenantService.getTenantByEmail(email);
+  @Override
+  public List<RentalAgreementResponseDto> getRentalAgreementsByTenant(String email) {
+    Tenant tenant = tenantService.getTenantByEmail(email);
 
-        return rentalAgreementRepository.getAllRentalAgreementsByTenant(tenant).stream()
-                .map(rentalAgreementMapper::toDto)
-                .collect(Collectors.toList());
-    }
+    return rentalAgreementRepository.getAllRentalAgreementsByTenant(tenant).stream()
+        .map(rentalAgreementMapper::toDto)
+        .collect(Collectors.toList());
+  }
 }

@@ -9,9 +9,6 @@ import com.example.myApp.landlord.entity.Landlord;
 import com.example.myApp.landlord.services.LandlordService;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.example.myApp.tenant.entity.Tenant;
-import com.example.myApp.tenant.services.TenantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
