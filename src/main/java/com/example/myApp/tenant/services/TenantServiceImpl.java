@@ -1,5 +1,6 @@
 package com.example.myApp.tenant.services;
 
+import com.example.myApp.exception.TenantNotFoundException;
 import com.example.myApp.tenant.dtos.TenantRequestDto;
 import com.example.myApp.tenant.dtos.TenantResponseDto;
 import com.example.myApp.tenant.entity.Tenant;
@@ -25,9 +26,7 @@ public class TenantServiceImpl implements TenantService {
   }
 
   private Tenant getTenantByUser(User user) {
-    return tenantRepository
-        .findByUserId(user.getId())
-        .orElseThrow(() -> new RuntimeException("Tenant profile not found"));
+    return tenantRepository.findByUserId(user.getId()).orElseThrow(TenantNotFoundException::new);
   }
 
   @Override
@@ -72,8 +71,6 @@ public class TenantServiceImpl implements TenantService {
   public Tenant getTenantByEmail(String email) {
     User user =
         userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-    return tenantRepository
-        .findByUserId(user.getId())
-        .orElseThrow(() -> new RuntimeException("Tenant not found"));
+    return tenantRepository.findByUserId(user.getId()).orElseThrow(TenantNotFoundException::new);
   }
 }

@@ -2,6 +2,10 @@ package com.example.myApp.rentalAgreement.services;
 
 import com.example.myApp.apartment.entity.Apartment;
 import com.example.myApp.apartment.repository.ApartmentRepository;
+import com.example.myApp.exception.AccessDeniedException;
+import com.example.myApp.exception.ApartmentNotFoundException;
+import com.example.myApp.exception.RentalAgreementNotFoundException;
+import com.example.myApp.exception.TenantNotFoundException;
 import com.example.myApp.landlord.entity.Landlord;
 import com.example.myApp.landlord.repository.LandlordRepository;
 import com.example.myApp.landlord.services.LandlordService;
@@ -40,15 +44,15 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     Tenant tenant =
         tenantRepository
             .findById(requestDto.getTenantId())
-            .orElseThrow(() -> new RuntimeException("Tenant not found"));
+            .orElseThrow(TenantNotFoundException::new);
 
     Apartment apartment =
         apartmentRepository
             .findById(requestDto.getApartmentId())
-            .orElseThrow(() -> new RuntimeException("Apartment not found"));
+            .orElseThrow(ApartmentNotFoundException::new);
 
     if (!apartment.getLandlord().getId().equals(landlord.getId())) {
-      throw new RuntimeException("Access denied - this apartment does not belong to you");
+      throw new AccessDeniedException();
     }
 
     RentalAgreement rentalAgreement =
@@ -64,12 +68,10 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
     RentalAgreement agreement =
-        rentalAgreementRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("Rental agreement not found"));
+        rentalAgreementRepository.findById(id).orElseThrow(RentalAgreementNotFoundException::new);
 
     if (!agreement.getLandlord().getId().equals(landlord.getId()))
-      throw new RuntimeException("Access denied");
+      throw new AccessDeniedException();
 
     if (requestDto.getRentAmount() != null) agreement.setRentAmount(requestDto.getRentAmount());
     if (requestDto.getEndDate() != null) agreement.setEndDate(requestDto.getEndDate());
@@ -90,12 +92,10 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
     RentalAgreement agreement =
-        rentalAgreementRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("Rental agreement not found"));
+        rentalAgreementRepository.findById(id).orElseThrow(RentalAgreementNotFoundException::new);
 
     if (!agreement.getLandlord().getId().equals(landlord.getId()))
-      throw new RuntimeException("Access denied");
+      throw new AccessDeniedException();
 
     return rentalAgreementMapper.toDto(agreement);
   }
@@ -113,12 +113,10 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
     RentalAgreement agreement =
-        rentalAgreementRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("Rental agreement not found"));
+        rentalAgreementRepository.findById(id).orElseThrow(RentalAgreementNotFoundException::new);
 
     if (!agreement.getLandlord().getId().equals(landlord.getId()))
-      throw new RuntimeException("Access denied");
+      throw new AccessDeniedException();
 
     rentalAgreementRepository.deleteById(id);
   }

@@ -2,6 +2,10 @@ package com.example.myApp.item.services;
 
 import com.example.myApp.apartment.entity.Apartment;
 import com.example.myApp.apartment.repository.ApartmentRepository;
+import com.example.myApp.exception.AccessDeniedException;
+import com.example.myApp.exception.ApartmentNotFoundException;
+import com.example.myApp.exception.ItemNotFoundException;
+import com.example.myApp.exception.LandlordNotFoundException;
 import com.example.myApp.item.dtos.ItemRequestDto;
 import com.example.myApp.item.dtos.ItemResponseDto;
 import com.example.myApp.item.entity.Item;
@@ -37,18 +41,14 @@ public class ItemServiceImpl implements ItemService {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
     User user =
         userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-    return landlordRepository
-        .findByUser(user)
-        .orElseThrow(() -> new RuntimeException("Landlord not found"));
+    return landlordRepository.findByUser(user).orElseThrow(LandlordNotFoundException::new);
   }
 
   private Apartment getApartmentForLandlord(long apartmentId, Landlord landlord) {
     Apartment apartment =
-        apartmentRepository
-            .findById(apartmentId)
-            .orElseThrow(() -> new RuntimeException("Apartment not found"));
+        apartmentRepository.findById(apartmentId).orElseThrow(ItemNotFoundException::new);
     if (!apartment.getLandlord().getId().equals(landlord.getId())) {
-      throw new RuntimeException("Access denied");
+      throw new AccessDeniedException();
     }
     return apartment;
   }
@@ -65,14 +65,13 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public ItemResponseDto getItemById(long id) { // ← Long → long
+  public ItemResponseDto getItemById(long id) {
     Landlord landlord = getAuthenticatedLandlord();
 
-    Item item =
-        itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+    Item item = itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
 
     if (!item.getApartment().getLandlord().getId().equals(landlord.getId())) {
-      throw new RuntimeException("Access denied");
+      throw new AccessDeniedException();
     }
 
     return itemMapper.toDto(item);
@@ -92,11 +91,10 @@ public class ItemServiceImpl implements ItemService {
   public ItemResponseDto updateItem(long id, ItemRequestDto itemRequestDto) {
     Landlord landlord = getAuthenticatedLandlord();
 
-    Item item =
-        itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+    Item item = itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
 
     if (!item.getApartment().getLandlord().getId().equals(landlord.getId())) {
-      throw new RuntimeException("Access denied");
+      throw new AccessDeniedException();
     }
 
     if (itemRequestDto.getName() != null) item.setName(itemRequestDto.getName());
@@ -112,11 +110,10 @@ public class ItemServiceImpl implements ItemService {
   public void deleteItem(long id) {
     Landlord landlord = getAuthenticatedLandlord();
 
-    Item item =
-        itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+    Item item = itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
 
     if (!item.getApartment().getLandlord().getId().equals(landlord.getId())) {
-      throw new RuntimeException("Access denied");
+      throw new AccessDeniedException();
     }
 
     itemRepository.delete(item);
@@ -127,9 +124,7 @@ public class ItemServiceImpl implements ItemService {
     Tenant tenant = tenantService.getTenantByEmail(email);
 
     Apartment apartment =
-        apartmentRepository
-            .findById(apartmentId)
-            .orElseThrow(() -> new RuntimeException("Apartment not found"));
+        apartmentRepository.findById(apartmentId).orElseThrow(ApartmentNotFoundException::new);
 
     rentalAgreementRepository
         .findByTenantAndApartmentAndStatus(tenant, apartment, ContractStatus.ACTIVE)
