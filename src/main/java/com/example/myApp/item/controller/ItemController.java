@@ -4,11 +4,15 @@ import com.example.myApp.item.dtos.ItemRequestDto;
 import com.example.myApp.item.dtos.ItemResponseDto;
 import com.example.myApp.item.services.ItemService;
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/items")
@@ -27,13 +31,15 @@ public class ItemController {
     return ResponseEntity.ok(itemService.getItemById(id));
   }
 
-  @GetMapping("/apartment/{apartmentId}")
-  public ResponseEntity<List<ItemResponseDto>> getAllItemsByApartment(
-      @PathVariable long apartmentId) {
-    return ResponseEntity.ok(itemService.getAllItemsByApartment(apartmentId));
-  }
+    @GetMapping("/apartment/{apartmentId}/items")
+    public ResponseEntity<List<ItemResponseDto>> getAllItemsByApartment(
+            @PathVariable long apartmentId,
+            @AuthenticationPrincipal String email) {
+        return ResponseEntity.ok(itemService.getAllItemsByApartmentForUser(apartmentId, email));
+    }
 
-  @PatchMapping("/{id}")
+
+    @PatchMapping("/{id}")
   public ResponseEntity<ItemResponseDto> updateItem(
       @PathVariable long id, @RequestBody ItemRequestDto requestDto) {
     return ResponseEntity.ok(itemService.updateItem(id, requestDto));
@@ -45,9 +51,14 @@ public class ItemController {
     return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/apartment/{apartmentId}/my-items")
-  public ResponseEntity<List<ItemResponseDto>> getAllItemsForTenantByApartment(
-      @PathVariable long apartmentId, @AuthenticationPrincipal String email) {
-    return ResponseEntity.ok(itemService.getAllItemsForTenantByApartment(apartmentId, email));
-  }
+
+    @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ItemResponseDto> uploadImage(
+            @PathVariable long id,
+            @RequestPart("file") MultipartFile file,
+            @AuthenticationPrincipal String email) {
+        return ResponseEntity.ok(itemService.uploadImage(id, file, email));
+    }
+
+
 }

@@ -10,7 +10,7 @@ public interface ApartmentService {
 
   ApartmentResponseDto getApartmentById(long id);
 
-  List<ApartmentResponseDto> getAllApartmentsByLandlord();
+  List<ApartmentResponseDto> getAllApartments(String email);
 
   ApartmentResponseDto updateApartment(long id, ApartmentRequestDto apartmentRequestDto);
 

@@ -38,22 +38,18 @@ public class RentalAgreementController {
     return ResponseEntity.ok(rentalAgreementService.getRentalAgreement(id, email));
   }
 
-  @GetMapping
-  public ResponseEntity<List<RentalAgreementResponseDto>> getRentalAgreements(
-      @AuthenticationPrincipal String email) {
-    return ResponseEntity.ok(rentalAgreementService.getRentalAgreementsByLandlord(email));
-  }
+    @GetMapping
+    public ResponseEntity<List<RentalAgreementResponseDto>> getMyAgreements(
+            @AuthenticationPrincipal String email) {
+        return ResponseEntity.ok(rentalAgreementService.getRentalAgreements(email));
+    }
 
-  @DeleteMapping("/{id}")
+
+    @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteRentalAgreement(
       @PathVariable long id, @AuthenticationPrincipal String email) {
     rentalAgreementService.deleteRentalAgreement(id, email);
     return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/my-agreements")
-  public ResponseEntity<List<RentalAgreementResponseDto>> getMyAgreements(
-      @AuthenticationPrincipal String email) {
-    return ResponseEntity.ok(rentalAgreementService.getRentalAgreementsByTenant(email));
-  }
 }

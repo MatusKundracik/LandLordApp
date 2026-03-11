@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,12 +29,14 @@ public class ApartmentController {
     return ResponseEntity.ok(apartmentService.getApartmentById(id));
   }
 
-  @GetMapping
-  public ResponseEntity<List<ApartmentResponseDto>> getAllApartments() {
-    return ResponseEntity.ok(apartmentService.getAllApartmentsByLandlord());
-  }
+    @GetMapping
+    public ResponseEntity<List<ApartmentResponseDto>> getAllApartments(
+            @AuthenticationPrincipal String email) {
+        return ResponseEntity.ok(apartmentService.getAllApartments(email));
+    }
 
-  @PutMapping("/{id}")
+
+    @PutMapping("/{id}")
   public ResponseEntity<ApartmentResponseDto> updateApartment(
       @PathVariable Long id, @RequestBody ApartmentRequestDto requestDto) {
     return ResponseEntity.ok(apartmentService.updateApartment(id, requestDto));

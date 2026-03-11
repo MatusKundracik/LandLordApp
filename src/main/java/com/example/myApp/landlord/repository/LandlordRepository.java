@@ -11,4 +11,7 @@ public interface LandlordRepository extends JpaRepository<Landlord, Long> {
   Optional<Landlord> findByUser(User user);
 
   Optional<Landlord> findByUserId(Long id);
+
+  boolean existsByUserEmail(String email);
+
 }
