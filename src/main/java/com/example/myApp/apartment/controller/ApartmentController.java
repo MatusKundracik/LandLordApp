@@ -3,6 +3,8 @@ package com.example.myApp.apartment.controller;
 import com.example.myApp.apartment.dtos.ApartmentRequestDto;
 import com.example.myApp.apartment.dtos.ApartmentResponseDto;
 import com.example.myApp.apartment.services.ApartmentService;
+import com.example.myApp.item.dtos.ItemResponseDto;
+import com.example.myApp.item.services.ItemService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ApartmentController {
 
   private final ApartmentService apartmentService;
+  private final ItemService itemService;
 
   @PostMapping
   public ResponseEntity<ApartmentResponseDto> createApartment(
@@ -29,14 +32,13 @@ public class ApartmentController {
     return ResponseEntity.ok(apartmentService.getApartmentById(id));
   }
 
-    @GetMapping
-    public ResponseEntity<List<ApartmentResponseDto>> getAllApartments(
-            @AuthenticationPrincipal String email) {
-        return ResponseEntity.ok(apartmentService.getAllApartments(email));
-    }
+  @GetMapping
+  public ResponseEntity<List<ApartmentResponseDto>> getAllApartments(
+      @AuthenticationPrincipal String email) {
+    return ResponseEntity.ok(apartmentService.getAllApartments(email));
+  }
 
-
-    @PutMapping("/{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<ApartmentResponseDto> updateApartment(
       @PathVariable Long id, @RequestBody ApartmentRequestDto requestDto) {
     return ResponseEntity.ok(apartmentService.updateApartment(id, requestDto));
@@ -46,5 +48,11 @@ public class ApartmentController {
   public ResponseEntity<Void> deleteApartment(@PathVariable Long id) {
     apartmentService.deleteApartment(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/{apartmentId}/items")
+  public ResponseEntity<List<ItemResponseDto>> getAllItemsByApartment(
+      @PathVariable long apartmentId, @AuthenticationPrincipal String email) {
+    return ResponseEntity.ok(itemService.getAllItemsByApartmentForUser(apartmentId, email));
   }
 }

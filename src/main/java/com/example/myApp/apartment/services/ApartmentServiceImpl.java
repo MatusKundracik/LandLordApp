@@ -10,13 +10,12 @@ import com.example.myApp.exception.ApartmentNotFoundException;
 import com.example.myApp.landlord.entity.Landlord;
 import com.example.myApp.landlord.repository.LandlordRepository;
 import com.example.myApp.landlord.services.LandlordService;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.example.myApp.rentalAgreement.entity.ContractStatus;
 import com.example.myApp.rentalAgreement.repository.RentalAgreementRepository;
 import com.example.myApp.tenant.entity.Tenant;
 import com.example.myApp.tenant.services.TenantService;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -62,23 +61,22 @@ public class ApartmentServiceImpl implements ApartmentService {
     return apartmentMapper.toDto(apartment);
   }
 
-    @Override
-    public List<ApartmentResponseDto> getAllApartments(String email) {
-        if (landlordRepository.existsByUserEmail(email)) {
-            Landlord landlord = landlordService.getLandlordByEmail(email);
-            return apartmentRepository.getAllApartmentsByLandlord(landlord).stream()
-                    .map(apartmentMapper::toDto)
-                    .collect(Collectors.toList());
-        } else {
-            Tenant tenant = tenantService.getTenantByEmail(email);
-            return rentalAgreementRepository.findByTenantAndStatus(tenant, ContractStatus.ACTIVE).stream()
-                    .map(agreement -> apartmentMapper.toDto(agreement.getApartment()))
-                    .collect(Collectors.toList());
-        }
+  @Override
+  public List<ApartmentResponseDto> getAllApartments(String email) {
+    if (landlordRepository.existsByUserEmail(email)) {
+      Landlord landlord = landlordService.getLandlordByEmail(email);
+      return apartmentRepository.getAllApartmentsByLandlord(landlord).stream()
+          .map(apartmentMapper::toDto)
+          .collect(Collectors.toList());
+    } else {
+      Tenant tenant = tenantService.getTenantByEmail(email);
+      return rentalAgreementRepository.findByTenantAndStatus(tenant, ContractStatus.ACTIVE).stream()
+          .map(agreement -> apartmentMapper.toDto(agreement.getApartment()))
+          .collect(Collectors.toList());
     }
+  }
 
-
-    @Override
+  @Override
   public ApartmentResponseDto updateApartment(long id, ApartmentRequestDto apartmentRequestDto) {
 
     String email = SecurityContextHolder.getContext().getAuthentication().getName();

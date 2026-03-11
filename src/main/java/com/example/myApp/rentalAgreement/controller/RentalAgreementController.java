@@ -11,7 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/rentalAgreement")
+@RequestMapping("/api/rental-agreements")
 @RequiredArgsConstructor
 public class RentalAgreementController {
 
@@ -38,18 +38,16 @@ public class RentalAgreementController {
     return ResponseEntity.ok(rentalAgreementService.getRentalAgreement(id, email));
   }
 
-    @GetMapping
-    public ResponseEntity<List<RentalAgreementResponseDto>> getMyAgreements(
-            @AuthenticationPrincipal String email) {
-        return ResponseEntity.ok(rentalAgreementService.getRentalAgreements(email));
-    }
+  @GetMapping
+  public ResponseEntity<List<RentalAgreementResponseDto>> getMyAgreements(
+      @AuthenticationPrincipal String email) {
+    return ResponseEntity.ok(rentalAgreementService.getRentalAgreements(email));
+  }
 
-
-    @DeleteMapping("/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteRentalAgreement(
       @PathVariable long id, @AuthenticationPrincipal String email) {
     rentalAgreementService.deleteRentalAgreement(id, email);
     return ResponseEntity.noContent().build();
   }
-
 }

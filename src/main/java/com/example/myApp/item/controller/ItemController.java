@@ -3,9 +3,6 @@ package com.example.myApp.item.controller;
 import com.example.myApp.item.dtos.ItemRequestDto;
 import com.example.myApp.item.dtos.ItemResponseDto;
 import com.example.myApp.item.services.ItemService;
-import java.util.List;
-
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,15 +28,7 @@ public class ItemController {
     return ResponseEntity.ok(itemService.getItemById(id));
   }
 
-    @GetMapping("/apartment/{apartmentId}/items")
-    public ResponseEntity<List<ItemResponseDto>> getAllItemsByApartment(
-            @PathVariable long apartmentId,
-            @AuthenticationPrincipal String email) {
-        return ResponseEntity.ok(itemService.getAllItemsByApartmentForUser(apartmentId, email));
-    }
-
-
-    @PatchMapping("/{id}")
+  @PatchMapping("/{id}")
   public ResponseEntity<ItemResponseDto> updateItem(
       @PathVariable long id, @RequestBody ItemRequestDto requestDto) {
     return ResponseEntity.ok(itemService.updateItem(id, requestDto));
@@ -51,14 +40,11 @@ public class ItemController {
     return ResponseEntity.noContent().build();
   }
 
-
-    @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ItemResponseDto> uploadImage(
-            @PathVariable long id,
-            @RequestPart("file") MultipartFile file,
-            @AuthenticationPrincipal String email) {
-        return ResponseEntity.ok(itemService.uploadImage(id, file, email));
-    }
-
-
+  @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<ItemResponseDto> uploadImage(
+      @PathVariable long id,
+      @RequestPart("file") MultipartFile file,
+      @AuthenticationPrincipal String email) {
+    return ResponseEntity.ok(itemService.uploadImage(id, file, email));
+  }
 }
