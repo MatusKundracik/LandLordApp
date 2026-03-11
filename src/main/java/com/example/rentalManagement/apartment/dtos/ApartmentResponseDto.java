@@ -1,0 +1,27 @@
+package com.example.rentalManagement.apartment.dtos;
+
+import com.example.rentalManagement.apartment.entity.UnitType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ApartmentResponseDto {
+  private Long id;
+  private String street;
+  private String streetNumber;
+  private String city;
+  private String postalCode;
+  private String apartmentNumber;
+  private Integer floor;
+  private Double areaSqm;
+  private String buildingRegNumber;
+  private String cadastralArea;
+  private String titleDeedNumber;
+  private UnitType unitType;
+  private Long landlordId;
+}
