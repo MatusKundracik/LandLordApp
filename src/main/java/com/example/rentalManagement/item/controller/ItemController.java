@@ -24,25 +24,25 @@ public class ItemController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ItemResponseDto> getItemById(@PathVariable long id) {
+  public ResponseEntity<ItemResponseDto> getItemById(@PathVariable Long id) {
     return ResponseEntity.ok(itemService.getItemById(id));
   }
 
   @PatchMapping("/{id}")
   public ResponseEntity<ItemResponseDto> updateItem(
-      @PathVariable long id, @RequestBody ItemRequestDto requestDto) {
+      @PathVariable Long id, @RequestBody ItemRequestDto requestDto) {
     return ResponseEntity.ok(itemService.updateItem(id, requestDto));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteItem(@PathVariable long id) {
+  public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
     itemService.deleteItem(id);
     return ResponseEntity.noContent().build();
   }
 
   @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<ItemResponseDto> uploadImage(
-      @PathVariable long id,
+      @PathVariable Long id,
       @RequestPart("file") MultipartFile file,
       @AuthenticationPrincipal String email) {
     return ResponseEntity.ok(itemService.uploadImage(id, file, email));

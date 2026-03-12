@@ -9,13 +9,13 @@ public interface ItemService {
 
   ItemResponseDto createItem(ItemRequestDto itemRequestDto);
 
-  ItemResponseDto getItemById(long id);
+  ItemResponseDto getItemById(Long id);
 
-  ItemResponseDto updateItem(long id, ItemRequestDto itemRequestDto);
+  ItemResponseDto updateItem(Long id, ItemRequestDto itemRequestDto);
 
-  void deleteItem(long id);
+  void deleteItem(Long id);
 
-  ItemResponseDto uploadImage(long id, MultipartFile file, String email);
+  ItemResponseDto uploadImage(Long id, MultipartFile file, String email);
 
-  List<ItemResponseDto> getAllItemsByApartmentForUser(long apartmentId, String email);
+  List<ItemResponseDto> getAllItemsByApartmentForUser(Long apartmentId, String email);
 }

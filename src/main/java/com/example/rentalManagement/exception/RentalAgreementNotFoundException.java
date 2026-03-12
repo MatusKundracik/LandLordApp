@@ -5,7 +5,7 @@ public class RentalAgreementNotFoundException extends RuntimeException {
     super("Rental agreement not found");
   }
 
-  public RentalAgreementNotFoundException(long id) {
+  public RentalAgreementNotFoundException(Long id) {
     super("Rental agreement with id " + id + " not found");
   }
 }

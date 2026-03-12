@@ -5,7 +5,7 @@ public class ItemNotFoundException extends RuntimeException {
     super("Item not found");
   }
 
-  public ItemNotFoundException(long id) {
+  public ItemNotFoundException(Long id) {
     super("Item with id " + id + " not found");
   }
 }

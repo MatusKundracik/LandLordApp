@@ -4,7 +4,6 @@ import com.example.rentalManagement.auth.dto.LandlordRegisterRequest;
 import com.example.rentalManagement.auth.dto.LoginRequest;
 import com.example.rentalManagement.auth.dto.LoginResponse;
 import com.example.rentalManagement.auth.dto.TenantRegisterRequest;
-import com.example.rentalManagement.exception.LandlordNotFoundException;
 import com.example.rentalManagement.landlord.entity.Landlord;
 import com.example.rentalManagement.landlord.repository.LandlordRepository;
 import com.example.rentalManagement.security.JwtUtils;
@@ -91,8 +90,7 @@ public class AuthServiceImpl implements AuthService {
 
     String token = jwtUtils.generateToken(user.getEmail());
 
-      return LoginResponse.builder().token(token).user(user).build();
-
+    return LoginResponse.builder().token(token).user(user).build();
   }
 
   @Override

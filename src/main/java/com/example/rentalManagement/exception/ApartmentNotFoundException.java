@@ -5,7 +5,7 @@ public class ApartmentNotFoundException extends RuntimeException {
     super("Apartment not found");
   }
 
-  public ApartmentNotFoundException(long id) {
+  public ApartmentNotFoundException(Long id) {
     super("Apartment with id " + id + " not found");
   }
 }

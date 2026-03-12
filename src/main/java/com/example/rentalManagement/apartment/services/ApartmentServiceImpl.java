@@ -46,7 +46,7 @@ public class ApartmentServiceImpl implements ApartmentService {
   }
 
   @Override
-  public ApartmentResponseDto getApartmentById(long id) {
+  public ApartmentResponseDto getApartmentById(Long id) {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
     Landlord landlord = landlordService.getLandlordByEmail(email);
@@ -77,7 +77,7 @@ public class ApartmentServiceImpl implements ApartmentService {
   }
 
   @Override
-  public ApartmentResponseDto updateApartment(long id, ApartmentRequestDto apartmentRequestDto) {
+  public ApartmentResponseDto updateApartment(Long id, ApartmentRequestDto apartmentRequestDto) {
 
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -116,7 +116,7 @@ public class ApartmentServiceImpl implements ApartmentService {
   }
 
   @Override
-  public void deleteApartment(long id) {
+  public void deleteApartment(Long id) {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
     Landlord landlord = landlordService.getLandlordByEmail(email);
