@@ -42,13 +42,14 @@ public class LandlordServiceImpl implements LandlordService {
     return landlordMapper.toDto(landlordRepository.save(landlord));
   }
 
-  @Override
-  public void deleteMyProfile(String email) {
-    Landlord landlord = getLandlordByEmail(email);
-    landlordRepository.delete(landlord);
-  }
+    @Override
+    public void deleteMyProfile(String email) {
+        Landlord landlord = getLandlordByEmail(email);
+        userRepository.delete(landlord.getUser());
+    }
 
-  @Override
+
+    @Override
   public Landlord getLandlordByEmail(String email) {
     User user =
         userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
