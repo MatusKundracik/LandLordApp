@@ -15,7 +15,6 @@ public class ItemMapper {
         .quantity(requestDto.getQuantity())
         .value(requestDto.getValue())
         .build();
-    // apartment sa nenastavuje tu - nastavuje sa v service
   }
 
   public ItemResponseDto toDto(Item item) {
