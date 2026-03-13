@@ -58,6 +58,7 @@ public class AuthServiceImpl implements AuthService {
             .surname(request.getSurname())
             .dateOfBirth(request.getDateOfBirth())
             .street(request.getStreet())
+                .streetNumber(request.getStreetNumber())
             .city(request.getCity())
             .postalCode(request.getPostalCode())
             .country(request.getCountry())

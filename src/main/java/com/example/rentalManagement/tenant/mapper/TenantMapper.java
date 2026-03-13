@@ -4,10 +4,12 @@ import com.example.rentalManagement.tenant.dtos.TenantRequestDto;
 import com.example.rentalManagement.tenant.dtos.TenantResponseDto;
 import com.example.rentalManagement.tenant.entity.Tenant;
 import com.example.rentalManagement.user.entity.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TenantMapper {
 
-  public static Tenant toEntity(TenantRequestDto request, User user) {
+  public Tenant toEntity(TenantRequestDto request, User user) {
     return Tenant.builder()
         .name(request.getName())
         .surname(request.getSurname())
@@ -22,7 +24,7 @@ public class TenantMapper {
         .build();
   }
 
-  public static TenantResponseDto toDto(Tenant tenant) {
+  public TenantResponseDto toDto(Tenant tenant) {
     return TenantResponseDto.builder()
         .id(tenant.getId())
         .name(tenant.getName())
