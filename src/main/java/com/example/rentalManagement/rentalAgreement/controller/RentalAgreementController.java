@@ -44,10 +44,10 @@ public class RentalAgreementController {
     return ResponseEntity.ok(rentalAgreementService.getRentalAgreements(email));
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteRentalAgreement(
-      @PathVariable Long id, @AuthenticationPrincipal String email) {
-    rentalAgreementService.deleteRentalAgreement(id, email);
-    return ResponseEntity.noContent().build();
-  }
+//  @DeleteMapping("/{id}")
+//  public ResponseEntity<Void> deleteRentalAgreement(
+//      @PathVariable Long id, @AuthenticationPrincipal String email) {
+//    rentalAgreementService.deleteRentalAgreement(id, email);
+//    return ResponseEntity.noContent().build();
+//  }
 }
