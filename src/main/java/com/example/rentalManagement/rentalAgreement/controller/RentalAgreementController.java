@@ -5,7 +5,6 @@ import com.example.rentalManagement.rentalAgreement.dtos.RentalAgreementResponse
 import com.example.rentalManagement.rentalAgreement.services.RentalAgreementService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class RentalAgreementController {
 
   private final RentalAgreementService rentalAgreementService;
-
-  @PostMapping
-  public ResponseEntity<RentalAgreementResponseDto> createRentalAgreement(
-      @RequestBody RentalAgreementRequestDto requestDto, @AuthenticationPrincipal String email) {
-    return ResponseEntity.status(HttpStatus.CREATED)
-        .body(rentalAgreementService.createRentalAgreement(requestDto, email));
-  }
 
   @PatchMapping("/{id}")
   public ResponseEntity<RentalAgreementResponseDto> updateRentalAgreement(

@@ -37,29 +37,26 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
   private final LandlordService landlordService;
   private final TenantService tenantService;
 
+  @Override
   public RentalAgreementResponseDto createRentalAgreement(
-      RentalAgreementRequestDto requestDto, String email) {
+      Long apartmentId, RentalAgreementRequestDto requestDto, String email) {
+
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
-    Tenant tenant =
-        tenantRepository
-            .findById(requestDto.getTenantId())
-            .orElseThrow(TenantNotFoundException::new);
-
     Apartment apartment =
-        apartmentRepository
-            .findById(requestDto.getApartmentId())
-            .orElseThrow(ApartmentNotFoundException::new);
+        apartmentRepository.findById(apartmentId).orElseThrow(ApartmentNotFoundException::new);
 
-    if (!apartment.getLandlord().getId().equals(landlord.getId())) {
+    if (!apartment.getLandlord().getId().equals(landlord.getId()))
       throw new AccessDeniedException();
-    }
+
+    if (apartment.getTenant() == null)
+      throw new TenantNotFoundException(); // byt nemá priradený tenant
+
+    Tenant tenant = apartment.getTenant(); // ← berie sa z bytu
 
     RentalAgreement rentalAgreement =
         rentalAgreementMapper.toEntity(requestDto, apartment, tenant, landlord);
-    RentalAgreement saved = rentalAgreementRepository.save(rentalAgreement);
-
-    return rentalAgreementMapper.toDto(saved);
+    return rentalAgreementMapper.toDto(rentalAgreementRepository.save(rentalAgreement));
   }
 
   public RentalAgreementResponseDto updateRentalAgreement(

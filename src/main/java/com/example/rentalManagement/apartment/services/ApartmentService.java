@@ -15,4 +15,6 @@ public interface ApartmentService {
   ApartmentResponseDto updateApartment(Long id, ApartmentRequestDto apartmentRequestDto);
 
   void deleteApartment(Long id);
+
+  ApartmentResponseDto assignTenant(Long apartmentId, Long tenantId, String email);
 }

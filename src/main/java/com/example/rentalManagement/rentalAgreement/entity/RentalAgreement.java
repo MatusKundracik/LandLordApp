@@ -20,18 +20,19 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RentalAgreement extends AuditableEntity {
 
-  private LocalDate startDate; // 01.02.2026
-  private LocalDate endDate; // 30.06.2026
-  private BigDecimal rentAmount; // 180 €
-  private BigDecimal utilitiesDeposit; // 140 €
-  private BigDecimal securityDeposit; // 320 €
-  private Integer paymentDayOfMonth; // 15
+  private LocalDate startDate;
+  private LocalDate endDate;
+  private BigDecimal rentAmount;
+  private BigDecimal utilitiesDeposit;
+  private BigDecimal securityDeposit;
+  private Integer paymentDayOfMonth;
   private String iban;
-  private BigDecimal penaltyRatePerDay; // 0.0005 (= 0.05%)
-  private LocalDate signedDate; // 31.01.2026
+  private BigDecimal penaltyRatePerDay;
+  private LocalDate signedDate;
 
   @Enumerated(EnumType.STRING)
-  private ContractStatus status; // enum: ACTIVE / EXPIRED / TERMINATED
+  @Builder.Default
+  private ContractStatus status = ContractStatus.ACTIVE;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "tenant_id", nullable = false)

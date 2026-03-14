@@ -7,12 +7,14 @@ import com.example.rentalManagement.apartment.mapper.ApartmentMapper;
 import com.example.rentalManagement.apartment.repository.ApartmentRepository;
 import com.example.rentalManagement.exception.AccessDeniedException;
 import com.example.rentalManagement.exception.ApartmentNotFoundException;
+import com.example.rentalManagement.exception.TenantNotFoundException;
 import com.example.rentalManagement.landlord.entity.Landlord;
 import com.example.rentalManagement.landlord.repository.LandlordRepository;
 import com.example.rentalManagement.landlord.services.LandlordService;
 import com.example.rentalManagement.rentalAgreement.entity.ContractStatus;
 import com.example.rentalManagement.rentalAgreement.repository.RentalAgreementRepository;
 import com.example.rentalManagement.tenant.entity.Tenant;
+import com.example.rentalManagement.tenant.repository.TenantRepository;
 import com.example.rentalManagement.tenant.services.TenantService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +32,7 @@ public class ApartmentServiceImpl implements ApartmentService {
   private final TenantService tenantService;
   private final LandlordRepository landlordRepository;
   private final RentalAgreementRepository rentalAgreementRepository;
+  private final TenantRepository tenantRepository;
 
   @Override
   public ApartmentResponseDto createApartment(ApartmentRequestDto apartmentRequestDto) {
@@ -129,5 +132,21 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
 
     apartmentRepository.delete(apartment);
+  }
+
+  @Override
+  public ApartmentResponseDto assignTenant(Long apartmentId, Long tenantId, String email) {
+    Landlord landlord = landlordService.getLandlordByEmail(email);
+
+    Apartment apartment =
+        apartmentRepository.findById(apartmentId).orElseThrow(ApartmentNotFoundException::new);
+
+    if (!apartment.getLandlord().getId().equals(landlord.getId()))
+      throw new AccessDeniedException();
+
+    Tenant tenant = tenantRepository.findById(tenantId).orElseThrow(TenantNotFoundException::new);
+
+    apartment.setTenant(tenant);
+    return apartmentMapper.toDto(apartmentRepository.save(apartment));
   }
 }

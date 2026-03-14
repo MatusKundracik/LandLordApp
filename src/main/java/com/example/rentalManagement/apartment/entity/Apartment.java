@@ -2,6 +2,7 @@ package com.example.rentalManagement.apartment.entity;
 
 import com.example.rentalManagement.landlord.entity.Landlord;
 import com.example.rentalManagement.shared.AuditableEntity;
+import com.example.rentalManagement.tenant.entity.Tenant;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,4 +36,8 @@ public class Apartment extends AuditableEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "landlord_id", nullable = false)
   private Landlord landlord;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "tenant_id", nullable = true) // ← nullable, byt môže byť prázdny
+  private Tenant tenant;
 }
