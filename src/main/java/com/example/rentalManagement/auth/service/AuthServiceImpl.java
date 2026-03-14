@@ -97,7 +97,7 @@ public class AuthServiceImpl implements AuthService {
             .id(user.getId())
             .email(user.getEmail())
             .role(user.getRole().name())
-            .build(); // ← password sa sem nedostane
+            .build();
 
     return LoginResponse.builder().token(token).userResponseDto(userDto).build();
   }
