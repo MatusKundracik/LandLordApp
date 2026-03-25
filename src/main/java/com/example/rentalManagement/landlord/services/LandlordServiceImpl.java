@@ -134,4 +134,19 @@ public class LandlordServiceImpl implements LandlordService {
 
     return tenantMapper.toDto(tenantRepository.save(tenant));
   }
+
+  @Override
+  public List<TenantResponseDto> searchTenants(String query, String email) {
+    Landlord landlord = getLandlordByEmail(email);
+
+    List<Tenant> results;
+
+    if (query.contains("@")) {
+      results = tenantRepository.searchTenantsByEmail(query, landlord);
+    } else {
+      results = tenantRepository.searchTenantsByNameAndSurname(query, landlord);
+    }
+
+    return results.stream().map(tenantMapper::toDto).collect(Collectors.toList());
+  }
 }

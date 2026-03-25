@@ -23,6 +23,7 @@ public class ProfileDto {
   private String country;
   private String phoneNumber;
   private String tin;
+  private String iban;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 }

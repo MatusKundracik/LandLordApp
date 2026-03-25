@@ -49,10 +49,9 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     if (!apartment.getLandlord().getId().equals(landlord.getId()))
       throw new AccessDeniedException();
 
-    if (apartment.getTenant() == null)
-      throw new TenantNotFoundException(); // byt nemá priradený tenant
+    if (apartment.getTenant() == null) throw new TenantNotFoundException();
 
-    Tenant tenant = apartment.getTenant(); // ← berie sa z bytu
+    Tenant tenant = apartment.getTenant();
 
     RentalAgreement rentalAgreement =
         rentalAgreementMapper.toEntity(requestDto, apartment, tenant, landlord);
@@ -74,7 +73,6 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     if (requestDto.getEndDate() != null) agreement.setEndDate(requestDto.getEndDate());
     if (requestDto.getPaymentDayOfMonth() != null)
       agreement.setPaymentDayOfMonth(requestDto.getPaymentDayOfMonth());
-    if (requestDto.getIban() != null) agreement.setIban(requestDto.getIban());
     if (requestDto.getUtilitiesDeposit() != null)
       agreement.setUtilitiesDeposit(requestDto.getUtilitiesDeposit());
     if (requestDto.getSecurityDeposit() != null)

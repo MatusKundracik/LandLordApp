@@ -43,4 +43,7 @@ public class LandlordRequestDto {
 
   @NotBlank(message = "Phone number is required")
   private String phoneNumber;
+
+  @NotBlank(message = "IBAN is required")
+  private String iban;
 }

@@ -26,6 +26,7 @@ public class Landlord extends AuditableEntity {
   private String country;
   private String tin;
   private String phoneNumber;
+  private String iban;
 
   @OneToOne
   @JoinColumn(name = "user_id", nullable = false)

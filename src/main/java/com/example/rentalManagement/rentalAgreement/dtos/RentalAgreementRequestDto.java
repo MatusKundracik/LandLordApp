@@ -3,7 +3,6 @@ package com.example.rentalManagement.rentalAgreement.dtos;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,9 +38,6 @@ public class RentalAgreementRequestDto {
   @Min(value = 1, message = "Payment day must be between 1 and 31")
   @Max(value = 31, message = "Payment day must be between 1 and 31")
   private Integer paymentDayOfMonth;
-
-  @NotBlank(message = "IBAN is required")
-  private String iban;
 
   @NotNull(message = "Penalty rate per day is required")
   @DecimalMin(value = "0.0", message = "Penalty rate cannot be negative")

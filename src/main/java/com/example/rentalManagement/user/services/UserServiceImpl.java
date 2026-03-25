@@ -127,6 +127,7 @@ public class UserServiceImpl implements UserService {
                 .country(requestDto.getCountry())
                 .tin(requestDto.getTin())
                 .phoneNumber(requestDto.getPhoneNumber())
+                .iban(requestDto.getIban())
                 .build();
         landlordService.updateMyProfile(dto, email);
       }

@@ -23,4 +23,5 @@ public class LandlordResponseDto {
   private String tin;
   private String phoneNumber;
   private String email;
+  private String iban;
 }

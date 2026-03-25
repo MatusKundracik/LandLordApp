@@ -26,7 +26,6 @@ public class RentalAgreement extends AuditableEntity {
   private BigDecimal utilitiesDeposit;
   private BigDecimal securityDeposit;
   private Integer paymentDayOfMonth;
-  private String iban;
   private BigDecimal penaltyRatePerDay;
   private LocalDate signedDate;
 

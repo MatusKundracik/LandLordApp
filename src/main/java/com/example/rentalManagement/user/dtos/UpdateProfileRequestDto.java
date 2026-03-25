@@ -21,4 +21,5 @@ public class UpdateProfileRequestDto {
   private String country;
   private String phoneNumber;
   private String tin;
+  private String iban;
 }

@@ -35,4 +35,5 @@ public class LandlordRegisterRequest {
   private String tin;
 
   private String phoneNumber;
+  private String iban;
 }

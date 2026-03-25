@@ -65,6 +65,7 @@ public class AuthServiceImpl implements AuthService {
             .country(request.getCountry())
             .tin(request.getTin())
             .phoneNumber(request.getPhoneNumber())
+            .iban(request.getIban())
             .user(savedUser)
             .build();
 
