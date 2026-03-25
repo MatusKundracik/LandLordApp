@@ -18,18 +18,15 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RentalAgreementRequestDto {
 
-  // --- Na čo a s kým sa zmluva uzatvára ---
   @NotNull(message = "Tenant ID is required")
   private Long tenantId;
 
   @NotNull(message = "Apartment ID is required")
   private Long apartmentId;
 
-  // --- Zmluvné podmienky ---
   @NotNull(message = "Start date is required")
   private LocalDate startDate;
 
-  // endDate môže byť null, ak sa zmluva uzatvára na neurčito
   private LocalDate endDate;
 
   @NotNull(message = "Rent amount is required")
