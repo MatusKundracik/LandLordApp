@@ -14,21 +14,19 @@ import lombok.NoArgsConstructor;
 @Builder
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String email;
+  @Column(unique = true, nullable = false)
+  private String email;
 
-    @Column(nullable = false)
-    private String password;
+  @Column(nullable = false)
+  private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private Role role;
 
-    private boolean isActive = true;
+  private boolean isActive = true;
 }
-
-
