@@ -52,7 +52,7 @@ public class ApartmentController {
     return ResponseEntity.ok(apartmentService.getAllApartments(email));
   }
 
-  @PutMapping("/{id}")
+  @PatchMapping("/{id}")
   public ResponseEntity<ApartmentResponseDto> updateApartment(
       @PathVariable Long id, @RequestBody ApartmentRequestDto requestDto) {
     return ResponseEntity.ok(apartmentService.updateApartment(id, requestDto));

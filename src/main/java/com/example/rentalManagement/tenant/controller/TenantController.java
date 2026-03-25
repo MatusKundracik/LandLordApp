@@ -18,25 +18,25 @@ public class TenantController {
 
   private final TenantService tenantService;
 
-  @GetMapping("/profile")
-  public ResponseEntity<TenantResponseDto> getMyProfile(@AuthenticationPrincipal String email) {
-
-    TenantResponseDto responseDto = tenantService.getMyProfile(email);
-    return ResponseEntity.ok(responseDto);
-  }
-
-  @PutMapping("/profile")
-  public ResponseEntity<TenantResponseDto> updateMyProfile(
-      @Valid @RequestBody TenantRequestDto requestDto, @AuthenticationPrincipal String email) {
-
-    TenantResponseDto responseDto = tenantService.updateMyProfile(requestDto, email);
-    return ResponseEntity.ok(responseDto);
-  }
-
-  @DeleteMapping("/profile")
-  public ResponseEntity<Void> deleteMyProfile(@AuthenticationPrincipal String email) {
-
-    tenantService.deleteMyProfile(email);
-    return ResponseEntity.noContent().build();
-  }
+//  @GetMapping("/profile")
+//  public ResponseEntity<TenantResponseDto> getMyProfile(@AuthenticationPrincipal String email) {
+//
+//    TenantResponseDto responseDto = tenantService.getMyProfile(email);
+//    return ResponseEntity.ok(responseDto);
+//  }
+//
+//  @PutMapping("/profile")
+//  public ResponseEntity<TenantResponseDto> updateMyProfile(
+//      @Valid @RequestBody TenantRequestDto requestDto, @AuthenticationPrincipal String email) {
+//
+//    TenantResponseDto responseDto = tenantService.updateMyProfile(requestDto, email);
+//    return ResponseEntity.ok(responseDto);
+//  }
+//
+//  @DeleteMapping("/profile")
+//  public ResponseEntity<Void> deleteMyProfile(@AuthenticationPrincipal String email) {
+//
+//    tenantService.deleteMyProfile(email);
+//    return ResponseEntity.noContent().build();
+//  }
 }
