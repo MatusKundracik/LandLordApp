@@ -38,6 +38,6 @@ public class Apartment extends AuditableEntity {
   private Landlord landlord;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "tenant_id", nullable = true) // ← nullable, byt môže byť prázdny
+  @JoinColumn(name = "tenant_id", nullable = true)
   private Tenant tenant;
 }
