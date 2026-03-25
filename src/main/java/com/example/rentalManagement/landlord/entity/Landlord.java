@@ -5,6 +5,8 @@ import com.example.rentalManagement.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "landlords")
@@ -27,5 +29,6 @@ public class Landlord extends AuditableEntity {
 
   @OneToOne
   @JoinColumn(name = "user_id", nullable = false)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private User user;
 }

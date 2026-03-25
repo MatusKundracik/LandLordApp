@@ -1,5 +1,6 @@
 package com.example.rentalManagement.auth.dto;
 
+import com.example.rentalManagement.user.entity.User;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,4 +9,5 @@ import lombok.Data;
 public class LoginResponse {
   private String token;
   private String role;
+  private User user;
 }
