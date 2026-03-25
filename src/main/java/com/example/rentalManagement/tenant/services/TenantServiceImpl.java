@@ -18,8 +18,9 @@ public class TenantServiceImpl implements TenantService {
 
   private final TenantRepository tenantRepository;
   private final UserRepository userRepository;
+    private final TenantMapper tenantMapper;
 
-  private User getUserByEmail(String email) {
+    private User getUserByEmail(String email) {
     return userRepository
         .findByEmail(email)
         .orElseThrow(() -> new RuntimeException("User not found"));
@@ -35,7 +36,7 @@ public class TenantServiceImpl implements TenantService {
     User user = getUserByEmail(email);
     Tenant tenant = getTenantByUser(user);
 
-    return TenantMapper.toDto(tenant);
+    return tenantMapper.toDto(tenant);
   }
 
   @Override
@@ -55,7 +56,7 @@ public class TenantServiceImpl implements TenantService {
     tenant.setPhoneNumber(request.getPhoneNumber());
 
     Tenant updatedTenant = tenantRepository.save(tenant);
-    return TenantMapper.toDto(updatedTenant);
+    return tenantMapper.toDto(updatedTenant);
   }
 
   @Override

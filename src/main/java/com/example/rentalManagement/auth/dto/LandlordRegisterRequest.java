@@ -28,6 +28,7 @@ public class LandlordRegisterRequest {
   private LocalDate dateOfBirth;
 
   private String street;
+  private String streetNumber;
   private String city;
   private String postalCode;
   private String country;
