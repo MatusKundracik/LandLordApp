@@ -28,9 +28,8 @@ public interface TenantRepository extends JpaRepository<Tenant, Long> {
       @Param("query") String query, @Param("landlord") Landlord landlord);
 
   @Query(
-          "SELECT t FROM Tenant t WHERE t.landlord = :landlord AND t.user IS NOT NULL AND "
-                  + "LOWER(t.email) LIKE LOWER(CONCAT('%', :query, '%'))")
+      "SELECT t FROM Tenant t WHERE t.landlord = :landlord AND t.user IS NOT NULL AND "
+          + "LOWER(t.email) LIKE LOWER(CONCAT('%', :query, '%'))")
   List<Tenant> searchTenantsByEmail(
-          @Param("query") String query, @Param("landlord") Landlord landlord);
-
+      @Param("query") String query, @Param("landlord") Landlord landlord);
 }

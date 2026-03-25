@@ -22,6 +22,7 @@ public class LandlordMapper {
         .tin(landlord.getTin())
         .phoneNumber(landlord.getPhoneNumber())
         .email(landlord.getUser() != null ? landlord.getUser().getEmail() : null)
+        .iban(landlord.getIban())
         .build();
   }
 
@@ -37,6 +38,7 @@ public class LandlordMapper {
         .country(dto.getCountry())
         .tin(dto.getTin())
         .phoneNumber(dto.getPhoneNumber())
+        .iban(dto.getIban())
         .build();
   }
 }
