@@ -9,13 +9,11 @@ import com.example.rentalManagement.item.services.ItemService;
 import com.example.rentalManagement.rentalAgreement.dtos.RentalAgreementRequestDto;
 import com.example.rentalManagement.rentalAgreement.dtos.RentalAgreementResponseDto;
 import com.example.rentalManagement.rentalAgreement.services.RentalAgreementService;
-import java.util.List;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -80,28 +78,27 @@ public class ApartmentController {
         .body(rentalAgreementService.createRentalAgreement(apartmentId, dto, email));
   }
 
-    @PutMapping("/{apartmentId}/tenants/{tenantId}")
-    public ResponseEntity<ApartmentResponseDto> assignTenant(
-            @PathVariable Long apartmentId,
-            @PathVariable Long tenantId,
-            @AuthenticationPrincipal String email) {
-        return ResponseEntity.ok(apartmentService.assignTenant(apartmentId, tenantId, email));
-    }
+  @PutMapping("/{apartmentId}/tenants/{tenantId}")
+  public ResponseEntity<ApartmentResponseDto> assignTenant(
+      @PathVariable Long apartmentId,
+      @PathVariable Long tenantId,
+      @AuthenticationPrincipal String email) {
+    return ResponseEntity.ok(apartmentService.assignTenant(apartmentId, tenantId, email));
+  }
 
-    @PostMapping(value = "/{apartmentId}/items", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ItemResponseDto> createItem(
-            @PathVariable Long apartmentId,
-            @RequestPart("item")
-            @Parameter(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = ItemRequestDto.class)))
-            ItemRequestDto requestDto,
-            @RequestPart(value = "file", required = false) MultipartFile file,
-            @AuthenticationPrincipal String email) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(itemService.createItem(apartmentId, requestDto, file, email));
-    }
-
-
-
-
+  @PostMapping(value = "/{apartmentId}/items", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<ItemResponseDto> createItem(
+      @PathVariable Long apartmentId,
+      @RequestPart("item")
+          @Parameter(
+              content =
+                  @Content(
+                      mediaType = MediaType.APPLICATION_JSON_VALUE,
+                      schema = @Schema(implementation = ItemRequestDto.class)))
+          ItemRequestDto requestDto,
+      @RequestPart(value = "file", required = false) MultipartFile file,
+      @AuthenticationPrincipal String email) {
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(itemService.createItem(apartmentId, requestDto, file, email));
+  }
 }

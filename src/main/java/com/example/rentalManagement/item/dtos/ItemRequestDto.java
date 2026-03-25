@@ -27,5 +27,4 @@ public class ItemRequestDto {
   @Positive
   @NotNull(message = "Value is required")
   private BigDecimal value;
-
 }

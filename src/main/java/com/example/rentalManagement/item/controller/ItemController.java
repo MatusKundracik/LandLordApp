@@ -4,12 +4,8 @@ import com.example.rentalManagement.item.dtos.ItemRequestDto;
 import com.example.rentalManagement.item.dtos.ItemResponseDto;
 import com.example.rentalManagement.item.services.ItemService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/items")
@@ -17,8 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ItemController {
 
   private final ItemService itemService;
-
-
 
   @GetMapping("/{id}")
   public ResponseEntity<ItemResponseDto> getItemById(@PathVariable Long id) {

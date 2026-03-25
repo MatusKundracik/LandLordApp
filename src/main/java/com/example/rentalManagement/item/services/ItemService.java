@@ -7,9 +7,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ItemService {
 
-    ItemResponseDto createItem(Long apartmentId, ItemRequestDto requestDto, MultipartFile file, String email);
+  ItemResponseDto createItem(
+      Long apartmentId, ItemRequestDto requestDto, MultipartFile file, String email);
 
-    ItemResponseDto getItemById(Long id);
+  ItemResponseDto getItemById(Long id);
 
   ItemResponseDto updateItem(Long id, ItemRequestDto itemRequestDto);
 
