@@ -5,6 +5,8 @@ import com.example.myApp.apartment.dtos.ApartmentResponseDto;
 import com.example.myApp.apartment.entity.Apartment;
 import com.example.myApp.apartment.mapper.ApartmentMapper;
 import com.example.myApp.apartment.repository.ApartmentRepository;
+import com.example.myApp.exception.AccessDeniedException;
+import com.example.myApp.exception.ApartmentNotFoundException;
 import com.example.myApp.landlord.entity.Landlord;
 import com.example.myApp.landlord.services.LandlordService;
 import java.util.List;
@@ -42,12 +44,10 @@ public class ApartmentServiceImpl implements ApartmentService {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
     Apartment apartment =
-        apartmentRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("Apartment not found"));
+        apartmentRepository.findById(id).orElseThrow(ApartmentNotFoundException::new);
 
     if (!apartment.getLandlord().getId().equals(landlord.getId())) {
-      throw new RuntimeException("Access denied");
+      throw new AccessDeniedException();
     }
 
     return apartmentMapper.toDto(apartment);
@@ -72,12 +72,10 @@ public class ApartmentServiceImpl implements ApartmentService {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
     Apartment apartment =
-        apartmentRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("Apartment not found"));
+        apartmentRepository.findById(id).orElseThrow(ApartmentNotFoundException::new);
 
     if (!apartment.getLandlord().getId().equals(landlord.getId())) {
-      throw new RuntimeException("Access denied");
+      throw new AccessDeniedException();
     }
 
     if (apartmentRequestDto.getStreet() != null)
@@ -112,12 +110,10 @@ public class ApartmentServiceImpl implements ApartmentService {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
     Apartment apartment =
-        apartmentRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("Apartment not found"));
+        apartmentRepository.findById(id).orElseThrow(ApartmentNotFoundException::new);
 
     if (!apartment.getLandlord().getId().equals(landlord.getId())) {
-      throw new RuntimeException("Access denied");
+      throw new AccessDeniedException();
     }
 
     apartmentRepository.delete(apartment);

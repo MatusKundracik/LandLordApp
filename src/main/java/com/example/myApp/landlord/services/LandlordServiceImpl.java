@@ -1,5 +1,6 @@
 package com.example.myApp.landlord.services;
 
+import com.example.myApp.exception.LandlordNotFoundException;
 import com.example.myApp.landlord.dtos.LandlordRequestDto;
 import com.example.myApp.landlord.dtos.LandlordResponseDto;
 import com.example.myApp.landlord.entity.Landlord;
@@ -52,6 +53,6 @@ public class LandlordServiceImpl implements LandlordService {
         userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
     return landlordRepository
         .findByUserId(user.getId())
-        .orElseThrow(() -> new RuntimeException("Landlord not found"));
+        .orElseThrow(LandlordNotFoundException::new);
   }
 }
