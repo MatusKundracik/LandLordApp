@@ -110,4 +110,28 @@ public class LandlordServiceImpl implements LandlordService {
 
     tenantRepository.delete(tenant);
   }
+
+  @Override
+  public TenantResponseDto updateTenant(TenantRequestDto requestDto, Long id, String email) {
+    Landlord landlord = getLandlordByEmail(email);
+
+    Tenant tenant = tenantRepository.findById(id).orElseThrow(TenantNotFoundException::new);
+
+    if (tenant.getLandlord() == null || !tenant.getLandlord().getId().equals(landlord.getId())) {
+      throw new AccessDeniedException();
+    }
+
+    if (requestDto.getName() != null) tenant.setName(requestDto.getName());
+    if (requestDto.getSurname() != null) tenant.setSurname(requestDto.getSurname());
+    if (requestDto.getDateOfBirth() != null) tenant.setDateOfBirth(requestDto.getDateOfBirth());
+    if (requestDto.getStreet() != null) tenant.setStreet(requestDto.getStreet());
+    if (requestDto.getStreetNumber() != null) tenant.setStreetNumber(requestDto.getStreetNumber());
+    if (requestDto.getCity() != null) tenant.setCity(requestDto.getCity());
+    if (requestDto.getPostalCode() != null) tenant.setPostalCode(requestDto.getPostalCode());
+    if (requestDto.getCountry() != null) tenant.setCountry(requestDto.getCountry());
+    if (requestDto.getPhoneNumber() != null) tenant.setPhoneNumber(requestDto.getPhoneNumber());
+    if (requestDto.getEmail() != null) tenant.setEmail(requestDto.getEmail());
+
+    return tenantMapper.toDto(tenantRepository.save(tenant));
+  }
 }

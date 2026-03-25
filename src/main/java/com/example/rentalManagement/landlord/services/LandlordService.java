@@ -22,4 +22,6 @@ public interface LandlordService {
   List<TenantResponseDto> getAllLandlordTenants(String email);
 
   void deleteTenant(String email, Long id);
+
+  TenantResponseDto updateTenant(TenantRequestDto dto, Long id, String email);
 }

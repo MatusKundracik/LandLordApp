@@ -39,6 +39,14 @@ public class LandlordController {
     return ResponseEntity.noContent().build();
   }
 
+  @PatchMapping("/tenants/{id}")
+  public ResponseEntity<TenantResponseDto> updateTenant(
+      @RequestBody TenantRequestDto tenantRequestDto,
+      @AuthenticationPrincipal String email,
+      @PathVariable Long id) {
+    return ResponseEntity.ok(landlordService.updateTenant(tenantRequestDto, id, email));
+  }
+
   //  @GetMapping("/profile")
   //  public ResponseEntity<LandlordResponseDto> getMyProfile(@AuthenticationPrincipal String email)
   // {
