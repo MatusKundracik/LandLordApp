@@ -3,43 +3,35 @@ package com.example.myApp.landlord.controller;
 import com.example.myApp.landlord.dtos.LandlordRequestDto;
 import com.example.myApp.landlord.dtos.LandlordResponseDto;
 import com.example.myApp.landlord.services.LandlordService;
-import java.util.List;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/landlords")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('LANDLORD')")
 public class LandlordController {
 
   private final LandlordService landlordService;
 
-  @GetMapping
-  public ResponseEntity<List<LandlordResponseDto>> getAllLandlords() {
-    return ResponseEntity.ok(landlordService.getAllLandlords());
+  @GetMapping("/profile")
+  public ResponseEntity<LandlordResponseDto> getMyProfile(@AuthenticationPrincipal String email) {
+    return ResponseEntity.ok(landlordService.getMyProfile(email));
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<LandlordResponseDto> getLandlordById(@PathVariable Long id) {
-    return ResponseEntity.ok(landlordService.getLandlordById(id));
+  @PutMapping("/profile")
+  public ResponseEntity<LandlordResponseDto> updateMyProfile(
+      @Valid @RequestBody LandlordRequestDto dto, @AuthenticationPrincipal String email) {
+    return ResponseEntity.ok(landlordService.updateMyProfile(dto, email));
   }
 
-  //    @PostMapping
-  //    public ResponseEntity<LandlordResponseDto> createLandlord(@RequestBody LandlordRequestDto
-  // dto) {
-  //        return ResponseEntity.ok(landlordService.createLandlord(dto));
-  //    }
-
-  @PutMapping("/{id}")
-  public ResponseEntity<LandlordResponseDto> updateLandlord(
-      @PathVariable Long id, @RequestBody LandlordRequestDto dto) {
-    return ResponseEntity.ok(landlordService.updateLandlord(id, dto));
-  }
-
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteLandlord(@PathVariable Long id) {
-    landlordService.deleteLandlord(id);
+  @DeleteMapping("/profile")
+  public ResponseEntity<Void> deleteMyProfile(@AuthenticationPrincipal String email) {
+    landlordService.deleteMyProfile(email);
     return ResponseEntity.noContent().build();
   }
 }

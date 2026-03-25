@@ -3,17 +3,14 @@ package com.example.myApp.landlord.services;
 import com.example.myApp.landlord.dtos.LandlordRequestDto;
 import com.example.myApp.landlord.dtos.LandlordResponseDto;
 import com.example.myApp.landlord.entity.Landlord;
-import java.util.List;
 
 public interface LandlordService {
 
-  List<LandlordResponseDto> getAllLandlords();
+  LandlordResponseDto getMyProfile(String email);
 
-  LandlordResponseDto getLandlordById(Long id);
+  LandlordResponseDto updateMyProfile(LandlordRequestDto dto, String email);
 
-  LandlordResponseDto updateLandlord(Long id, LandlordRequestDto dto);
+  void deleteMyProfile(String email);
 
-  void deleteLandlord(Long id);
-
-  Landlord getLandlordByEmail(String email);
+  Landlord getLandlordByEmail(String email); // ← táto ostáva, používa sa interne
 }
