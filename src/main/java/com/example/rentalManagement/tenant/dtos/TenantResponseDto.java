@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class TenantResponseDto {
-
   private Long id;
   private String name;
   private String surname;
@@ -24,7 +23,7 @@ public class TenantResponseDto {
   private String country;
   private String phoneNumber;
   private String email;
-
+  private Long apartmentId;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 }

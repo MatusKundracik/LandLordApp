@@ -2,7 +2,6 @@ package com.example.rentalManagement.apartment.entity;
 
 import com.example.rentalManagement.landlord.entity.Landlord;
 import com.example.rentalManagement.shared.AuditableEntity;
-import com.example.rentalManagement.tenant.entity.Tenant;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,20 +23,14 @@ public class Apartment extends AuditableEntity {
   private String apartmentNumber;
   private Integer floor;
   private Double areaSqm;
-  private String buildingRegNumber; // Súpisné číslo: "1672"
+  private String buildingRegNumber;
   private String cadastralArea;
   private String titleDeedNumber;
 
   @Enumerated(EnumType.STRING)
   private UnitType unitType;
 
-  // enum: APARTMENT, ROOM
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "landlord_id", nullable = false)
   private Landlord landlord;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "tenant_id", nullable = true)
-  private Tenant tenant;
 }

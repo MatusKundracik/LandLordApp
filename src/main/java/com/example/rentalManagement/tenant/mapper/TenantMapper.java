@@ -40,6 +40,7 @@ public class TenantMapper {
         .country(tenant.getCountry())
         .phoneNumber(tenant.getPhoneNumber())
         .email(tenant.getEmail())
+        .apartmentId(tenant.getApartment() != null ? tenant.getApartment().getId() : null)
         .createdAt(tenant.getCreatedAt())
         .updatedAt(tenant.getUpdatedAt())
         .build();

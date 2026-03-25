@@ -1,5 +1,6 @@
 package com.example.rentalManagement.tenant.entity;
 
+import com.example.rentalManagement.apartment.entity.Apartment;
 import com.example.rentalManagement.landlord.entity.Landlord;
 import com.example.rentalManagement.shared.AuditableEntity;
 import com.example.rentalManagement.user.entity.User;
@@ -33,4 +34,8 @@ public class Tenant extends AuditableEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "landlord_id", nullable = true)
   private Landlord landlord;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "apartment_id", nullable = true)
+  private Apartment apartment;
 }

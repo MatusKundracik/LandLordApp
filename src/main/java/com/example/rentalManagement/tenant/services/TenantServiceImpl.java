@@ -1,6 +1,8 @@
 package com.example.rentalManagement.tenant.services;
 
 import com.example.rentalManagement.exception.TenantNotFoundException;
+import com.example.rentalManagement.landlord.repository.LandlordRepository;
+import com.example.rentalManagement.landlord.services.LandlordService;
 import com.example.rentalManagement.tenant.dtos.TenantRequestDto;
 import com.example.rentalManagement.tenant.dtos.TenantResponseDto;
 import com.example.rentalManagement.tenant.entity.Tenant;
@@ -19,6 +21,8 @@ public class TenantServiceImpl implements TenantService {
   private final TenantRepository tenantRepository;
   private final UserRepository userRepository;
   private final TenantMapper tenantMapper;
+  private final LandlordRepository landlordRepository;
+  private final LandlordService landlordService;
 
   private User getUserByEmail(String email) {
     return userRepository
@@ -74,4 +78,12 @@ public class TenantServiceImpl implements TenantService {
         userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
     return tenantRepository.findByUserId(user.getId()).orElseThrow(TenantNotFoundException::new);
   }
+  //
+  //  public List<Tenant> getAllTenantsByApartmentId(Long apartmentId, String email) {
+  //
+  //      Landlord landlord = landlordService.getLandlordByEmail(email);
+  //
+  //      return List<Tenant> listOfTenantsInApartment =
+  // tenantRepository.getAllTenantsByApartmentId(apartmentId);
+  //  }
 }

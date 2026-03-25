@@ -14,6 +14,10 @@ public interface TenantRepository extends JpaRepository<Tenant, Long> {
 
   List<Tenant> findAllByLandlord(Landlord landlord);
 
+  List<Tenant> findAllByApartmentId(Long apartmentId);
+
+  Optional<Tenant> findByApartmentId(Long apartmentId); // ← pridaj toto
+
   boolean existsByEmail(String email);
 
   Optional<Tenant> findByEmail(String email);
@@ -21,14 +25,16 @@ public interface TenantRepository extends JpaRepository<Tenant, Long> {
   Optional<Tenant> findByEmailAndUserIsNull(String email);
 
   @Query(
-      "SELECT t FROM Tenant t WHERE t.landlord = :landlord AND ("
+      "SELECT t FROM Tenant t WHERE "
+          + "(t.user IS NOT NULL OR (t.user IS NULL AND t.landlord = :landlord)) AND ("
           + "LOWER(CONCAT(t.name, ' ', t.surname)) LIKE LOWER(CONCAT('%', :query, '%')) OR "
           + "LOWER(CONCAT(t.surname, ' ', t.name)) LIKE LOWER(CONCAT('%', :query, '%')))")
   List<Tenant> searchTenantsByNameAndSurname(
       @Param("query") String query, @Param("landlord") Landlord landlord);
 
   @Query(
-      "SELECT t FROM Tenant t WHERE t.landlord = :landlord AND t.user IS NOT NULL AND "
+      "SELECT t FROM Tenant t WHERE "
+          + "(t.user IS NOT NULL OR (t.user IS NULL AND t.landlord = :landlord)) AND "
           + "LOWER(t.email) LIKE LOWER(CONCAT('%', :query, '%'))")
   List<Tenant> searchTenantsByEmail(
       @Param("query") String query, @Param("landlord") Landlord landlord);

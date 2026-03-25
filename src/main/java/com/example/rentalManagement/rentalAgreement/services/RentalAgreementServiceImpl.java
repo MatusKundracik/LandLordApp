@@ -49,9 +49,8 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     if (!apartment.getLandlord().getId().equals(landlord.getId()))
       throw new AccessDeniedException();
 
-    if (apartment.getTenant() == null) throw new TenantNotFoundException();
-
-    Tenant tenant = apartment.getTenant();
+    Tenant tenant =
+        tenantRepository.findByApartmentId(apartmentId).orElseThrow(TenantNotFoundException::new);
 
     RentalAgreement rentalAgreement =
         rentalAgreementMapper.toEntity(requestDto, apartment, tenant, landlord);

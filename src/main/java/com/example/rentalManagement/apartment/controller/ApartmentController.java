@@ -9,7 +9,6 @@ import com.example.rentalManagement.item.services.ItemService;
 import com.example.rentalManagement.rentalAgreement.dtos.RentalAgreementRequestDto;
 import com.example.rentalManagement.rentalAgreement.dtos.RentalAgreementResponseDto;
 import com.example.rentalManagement.rentalAgreement.services.RentalAgreementService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,7 +29,6 @@ public class ApartmentController {
   private final ApartmentService apartmentService;
   private final ItemService itemService;
   private final RentalAgreementService rentalAgreementService;
-  private final ObjectMapper objectMapper;
 
   @PostMapping
   public ResponseEntity<ApartmentResponseDto> createApartment(

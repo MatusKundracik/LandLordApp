@@ -145,8 +145,15 @@ public class ApartmentServiceImpl implements ApartmentService {
       throw new AccessDeniedException();
 
     Tenant tenant = tenantRepository.findById(tenantId).orElseThrow(TenantNotFoundException::new);
-
-    apartment.setTenant(tenant);
-    return apartmentMapper.toDto(apartmentRepository.save(apartment));
+    if (tenant.getUser() == null) {
+      if (tenant.getLandlord().getId().equals(landlord.getId())) {
+        tenant.setApartment(apartment);
+        tenantRepository.save(tenant);
+      } else throw new AccessDeniedException();
+    } else {
+      tenant.setApartment(apartment);
+      tenantRepository.save(tenant);
+    }
+    return apartmentMapper.toDto(apartment);
   }
 }
