@@ -79,8 +79,6 @@ public class ItemServiceImpl implements ItemService {
     return itemMapper.toDto(item);
   }
 
-
-
   @Override
   public ItemResponseDto updateItem(long id, ItemRequestDto itemRequestDto) {
     Landlord landlord = getAuthenticatedLandlord();
@@ -113,49 +111,44 @@ public class ItemServiceImpl implements ItemService {
     itemRepository.delete(item);
   }
 
+  @Override
+  public ItemResponseDto uploadImage(long id, MultipartFile file, String email) {
+    Landlord landlord = landlordService.getLandlordByEmail(email);
 
+    Item item = itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
 
-    @Override
-    public ItemResponseDto uploadImage(long id, MultipartFile file, String email) {
-        Landlord landlord = landlordService.getLandlordByEmail(email);
+    if (!item.getApartment().getLandlord().getId().equals(landlord.getId()))
+      throw new AccessDeniedException();
 
-        Item item = itemRepository.findById(id)
-                .orElseThrow(ItemNotFoundException::new);
+    String imageUrl = cloudinaryService.uploadImage(file);
+    item.setImageUrl(imageUrl);
 
-        if (!item.getApartment().getLandlord().getId().equals(landlord.getId()))
-            throw new AccessDeniedException();
+    return itemMapper.toDto(itemRepository.save(item));
+  }
 
-        String imageUrl = cloudinaryService.uploadImage(file);
-        item.setImageUrl(imageUrl);
+  @Override
+  public List<ItemResponseDto> getAllItemsByApartmentForUser(long apartmentId, String email) {
+    Apartment apartment =
+        apartmentRepository.findById(apartmentId).orElseThrow(ApartmentNotFoundException::new);
 
-        return itemMapper.toDto(itemRepository.save(item));
+    if (isLandlord(email)) {
+      Landlord landlord = getAuthenticatedLandlord();
+      if (!apartment.getLandlord().equals(landlord)) {
+        throw new ApartmentNotFoundException();
+      }
+    } else {
+      Tenant tenant = tenantService.getTenantByEmail(email);
+      rentalAgreementRepository
+          .findByTenantAndApartmentAndStatus(tenant, apartment, ContractStatus.ACTIVE)
+          .orElseThrow(RentalAgreementNotFoundException::new);
     }
 
-    @Override
-    public List<ItemResponseDto> getAllItemsByApartmentForUser(long apartmentId, String email) {
-        Apartment apartment = apartmentRepository.findById(apartmentId)
-                .orElseThrow(ApartmentNotFoundException::new);
+    return itemRepository.findAllByApartment(apartment).stream()
+        .map(itemMapper::toDto)
+        .collect(Collectors.toList());
+  }
 
-        if (isLandlord(email)) {
-            Landlord landlord = getAuthenticatedLandlord();
-            if (!apartment.getLandlord().equals(landlord)) {
-                throw new ApartmentNotFoundException();
-            }
-        } else {
-            Tenant tenant = tenantService.getTenantByEmail(email);
-            rentalAgreementRepository
-                    .findByTenantAndApartmentAndStatus(tenant, apartment, ContractStatus.ACTIVE)
-                    .orElseThrow(RentalAgreementNotFoundException::new);
-        }
-
-        return itemRepository.findAllByApartment(apartment).stream()
-                .map(itemMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    private boolean isLandlord(String email) {
-        return landlordRepository.existsByUserEmail(email);
-    }
-
-
+  private boolean isLandlord(String email) {
+    return landlordRepository.existsByUserEmail(email);
+  }
 }

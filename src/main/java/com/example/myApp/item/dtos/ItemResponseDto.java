@@ -17,6 +17,5 @@ public class ItemResponseDto {
   private Integer quantity;
   private BigDecimal value;
   private Long apartmentId;
-    private String imageUrl;
-
+  private String imageUrl;
 }

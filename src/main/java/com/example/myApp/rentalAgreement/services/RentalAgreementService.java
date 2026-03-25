@@ -14,9 +14,7 @@ public interface RentalAgreementService {
 
   RentalAgreementResponseDto getRentalAgreement(long id, String email);
 
-
   void deleteRentalAgreement(long id, String email);
 
-    List<RentalAgreementResponseDto> getRentalAgreements(String email);
-
+  List<RentalAgreementResponseDto> getRentalAgreements(String email);
 }
