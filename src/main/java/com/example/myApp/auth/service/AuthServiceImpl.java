@@ -3,9 +3,12 @@ package com.example.myApp.auth.service;
 import com.example.myApp.auth.dto.LandlordRegisterRequest;
 import com.example.myApp.auth.dto.LoginRequest;
 import com.example.myApp.auth.dto.LoginResponse;
+import com.example.myApp.auth.dto.TenantRegisterRequest;
 import com.example.myApp.landlord.entity.Landlord;
 import com.example.myApp.landlord.repository.LandlordRepository;
 import com.example.myApp.security.JwtUtils;
+import com.example.myApp.tenant.entity.Tenant;
+import com.example.myApp.tenant.repository.TenantRepository;
 import com.example.myApp.user.entity.Role;
 import com.example.myApp.user.entity.User;
 import com.example.myApp.user.repository.UserRepository;
@@ -24,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
   private final LandlordRepository landlordRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtUtils jwtUtils;
+  private final TenantRepository tenantRepository;
 
   @Override
   @Transactional
@@ -87,5 +91,43 @@ public class AuthServiceImpl implements AuthService {
     String token = jwtUtils.generateToken(user.getEmail());
 
     return LoginResponse.builder().token(token).role(user.getRole().name()).build();
+  }
+
+  @Override
+  @Transactional
+  public void registerTenant(TenantRegisterRequest request) {
+    log.info("Registering tenant with email: {}", request.getEmail());
+
+    if (userRepository.existsByEmail(request.getEmail())) {
+      throw new RuntimeException("Email already exists");
+    }
+
+    User user =
+        User.builder()
+            .email(request.getEmail())
+            .password(passwordEncoder.encode(request.getPassword()))
+            .role(Role.TENANT)
+            .isActive(true)
+            .build();
+
+    User savedUser = userRepository.save(user);
+
+    Tenant tenant =
+        Tenant.builder()
+            .name(request.getName())
+            .surname(request.getSurname())
+            .dateOfBirth(request.getDateOfBirth())
+            .street(request.getStreet())
+            .streetNumber(request.getStreetNumber())
+            .city(request.getCity())
+            .postalCode(request.getPostalCode())
+            .country(request.getCountry())
+            .phoneNumber(request.getPhoneNumber())
+            .user(savedUser)
+            .build();
+
+    tenantRepository.save(tenant);
+
+    log.info("Tenant registered successfully");
   }
 }

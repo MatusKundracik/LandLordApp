@@ -1,5 +1,6 @@
 package com.example.myApp.tenant.entity;
 
+import com.example.myApp.shared.AuditableEntity;
 import com.example.myApp.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -11,11 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Tenant {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+public class Tenant extends AuditableEntity {
 
   private String name;
   private String surname;
@@ -28,6 +25,6 @@ public class Tenant {
   private String phoneNumber;
 
   @OneToOne
-  @JoinColumn(name = "user_id", nullable = false)
+  @JoinColumn(name = "user_id", nullable = true)
   private User user;
 }

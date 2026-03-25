@@ -1,5 +1,6 @@
 package com.example.myApp.user.entity;
 
+import com.example.myApp.shared.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,11 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+public class User extends AuditableEntity {
 
   @Column(unique = true, nullable = false)
   private String email;

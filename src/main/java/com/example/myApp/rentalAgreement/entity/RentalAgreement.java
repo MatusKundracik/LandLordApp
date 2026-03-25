@@ -2,11 +2,13 @@ package com.example.myApp.rentalAgreement.entity;
 
 import com.example.myApp.apartment.entity.Apartment;
 import com.example.myApp.landlord.entity.Landlord;
+import com.example.myApp.shared.AuditableEntity;
 import com.example.myApp.tenant.entity.Tenant;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,10 +17,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RentalAgreement {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+@Builder
+public class RentalAgreement extends AuditableEntity {
 
   private LocalDate startDate; // 01.02.2026
   private LocalDate endDate; // 30.06.2026
