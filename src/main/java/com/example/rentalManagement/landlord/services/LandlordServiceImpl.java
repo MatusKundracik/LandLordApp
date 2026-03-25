@@ -6,9 +6,15 @@ import com.example.rentalManagement.landlord.dtos.LandlordResponseDto;
 import com.example.rentalManagement.landlord.entity.Landlord;
 import com.example.rentalManagement.landlord.mapper.LandlordMapper;
 import com.example.rentalManagement.landlord.repository.LandlordRepository;
+import com.example.rentalManagement.tenant.dtos.TenantRequestDto;
+import com.example.rentalManagement.tenant.dtos.TenantResponseDto;
+import com.example.rentalManagement.tenant.entity.Tenant;
+import com.example.rentalManagement.tenant.mapper.TenantMapper;
+import com.example.rentalManagement.tenant.repository.TenantRepository;
 import com.example.rentalManagement.user.entity.User;
 import com.example.rentalManagement.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +24,8 @@ public class LandlordServiceImpl implements LandlordService {
   private final LandlordMapper landlordMapper;
   private final LandlordRepository landlordRepository;
   private final UserRepository userRepository;
+  private final TenantRepository tenantRepository;
+  private final TenantMapper tenantMapper;
 
   @Override
   public LandlordResponseDto getMyProfile(String email) {
@@ -55,5 +63,24 @@ public class LandlordServiceImpl implements LandlordService {
     return landlordRepository
         .findByUserId(user.getId())
         .orElseThrow(LandlordNotFoundException::new);
+  }
+
+  @Override
+  public TenantResponseDto createTenant(TenantRequestDto tenantRequestDto) {
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    Landlord landlord = getLandlordByEmail(email);
+
+      if (userRepository.existsByEmail(tenantRequestDto.getEmail())) {
+          throw new RuntimeException("User with this email already exists");
+      }
+
+      if (tenantRepository.existsByEmail(tenantRequestDto.getEmail())) {
+          throw new RuntimeException("User with this email already exists");
+      }
+
+    Tenant tenant = tenantMapper.toEntity(tenantRequestDto, null, landlord);
+    Tenant saved = tenantRepository.save(tenant);
+
+    return tenantMapper.toDto(saved);
   }
 }

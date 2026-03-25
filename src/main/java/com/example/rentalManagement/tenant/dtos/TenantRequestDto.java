@@ -39,4 +39,6 @@ public class TenantRequestDto {
 
   @NotBlank(message = "Phone number is required")
   private String phoneNumber;
+
+  private String email;
 }

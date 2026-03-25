@@ -23,6 +23,8 @@ public class TenantResponseDto {
   private String postalCode;
   private String country;
   private String phoneNumber;
+  private String email;
+
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 }
