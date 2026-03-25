@@ -18,12 +18,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RentalAgreementRequestDto {
 
-  @NotNull(message = "Tenant ID is required")
-  private Long tenantId;
-
-  @NotNull(message = "Apartment ID is required")
-  private Long apartmentId;
-
   @NotNull(message = "Start date is required")
   private LocalDate startDate;
 
