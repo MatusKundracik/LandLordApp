@@ -20,12 +20,6 @@ public class TenantController {
   private final TenantService tenantService;
   private final LandlordService landlordService;
 
-  @GetMapping
-  public ResponseEntity<List<TenantResponseDto>> getAllTenantsByLandlord(
-      @AuthenticationPrincipal String email) {
-    return ResponseEntity.ok(landlordService.getAllLandlordTenants(email));
-  }
-
   @DeleteMapping("{id}")
   public ResponseEntity<Void> deleteTenant(
       @AuthenticationPrincipal String email, @PathVariable Long id) {
