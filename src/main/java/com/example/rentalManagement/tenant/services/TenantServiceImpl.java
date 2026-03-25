@@ -18,9 +18,9 @@ public class TenantServiceImpl implements TenantService {
 
   private final TenantRepository tenantRepository;
   private final UserRepository userRepository;
-    private final TenantMapper tenantMapper;
+  private final TenantMapper tenantMapper;
 
-    private User getUserByEmail(String email) {
+  private User getUserByEmail(String email) {
     return userRepository
         .findByEmail(email)
         .orElseThrow(() -> new RuntimeException("User not found"));

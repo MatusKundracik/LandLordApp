@@ -59,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
             .surname(request.getSurname())
             .dateOfBirth(request.getDateOfBirth())
             .street(request.getStreet())
-                .streetNumber(request.getStreetNumber())
+            .streetNumber(request.getStreetNumber())
             .city(request.getCity())
             .postalCode(request.getPostalCode())
             .country(request.getCountry())
@@ -73,38 +73,36 @@ public class AuthServiceImpl implements AuthService {
     log.info("Landlord registered successfully");
   }
 
-    @Override
-    public LoginResponse login(LoginRequest request) {
-        log.info("Logging in user with email: {}", request.getEmail());
+  @Override
+  public LoginResponse login(LoginRequest request) {
+    log.info("Logging in user with email: {}", request.getEmail());
 
-        User user = userRepository
-                .findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+    User user =
+        userRepository
+            .findByEmail(request.getEmail())
+            .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
-        if (!user.isActive()) {
-            throw new RuntimeException("Account is not active");
-        }
-
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
-        }
-
-        String token = jwtUtils.generateToken(user.getEmail());
-
-        UserResponseDto userDto = UserResponseDto.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .role(user.getRole().name())
-                .build(); // ← password sa sem nedostane
-
-        return LoginResponse.builder()
-                .token(token)
-                .userResponseDto(userDto)
-                .build();
+    if (!user.isActive()) {
+      throw new RuntimeException("Account is not active");
     }
 
+    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+      throw new RuntimeException("Invalid email or password");
+    }
 
-    @Override
+    String token = jwtUtils.generateToken(user.getEmail());
+
+    UserResponseDto userDto =
+        UserResponseDto.builder()
+            .id(user.getId())
+            .email(user.getEmail())
+            .role(user.getRole().name())
+            .build(); // ← password sa sem nedostane
+
+    return LoginResponse.builder().token(token).userResponseDto(userDto).build();
+  }
+
+  @Override
   @Transactional
   public void registerTenant(TenantRegisterRequest request) {
     log.info("Registering tenant with email: {}", request.getEmail());
