@@ -9,4 +9,6 @@ public interface LandlordRepository extends JpaRepository<Landlord, Long> {
   boolean existsByTin(String tin);
 
   Optional<Landlord> findByUser(User user);
+
+  Optional<Landlord> findByUserId(Long id);
 }

@@ -5,6 +5,8 @@ import com.example.myApp.landlord.dtos.LandlordResponseDto;
 import com.example.myApp.landlord.entity.Landlord;
 import com.example.myApp.landlord.mapper.LandlordMapper;
 import com.example.myApp.landlord.repository.LandlordRepository;
+import com.example.myApp.user.entity.User;
+import com.example.myApp.user.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ public class LandlordServiceImpl implements LandlordService {
 
   private final LandlordRepository landlordRepository;
   private final LandlordMapper landlordMapper;
+  private final UserRepository userRepository;
 
   @Override
   public List<LandlordResponseDto> getAllLandlords() {
@@ -58,5 +61,13 @@ public class LandlordServiceImpl implements LandlordService {
             .findById(id)
             .orElseThrow(() -> new RuntimeException("Landlord not found"));
     landlordRepository.delete(landlord);
+  }
+
+  public Landlord getLandlordByEmail(String email) {
+    User user =
+        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    return landlordRepository
+        .findByUserId(user.getId())
+        .orElseThrow(() -> new RuntimeException("Landlord not found"));
   }
 }
