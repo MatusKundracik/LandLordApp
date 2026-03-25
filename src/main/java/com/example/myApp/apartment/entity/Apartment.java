@@ -25,7 +25,7 @@ public class Apartment {
   private String postalCode;
   private String apartmentNumber; // "64"
   private Integer floor; // 4
-  private BigDecimal areaSqm; // 52.89
+    private Double areaSqm;
   private String buildingRegNumber; // Súpisné číslo: "1672"
   private String cadastralArea; // "Letná"
   private String titleDeedNumber; // LV: "12162"
@@ -33,7 +33,7 @@ public class Apartment {
   @Enumerated(EnumType.STRING)
   private UnitType unitType;
 
-  // enum: WHOLE_APARTMENT / ROOM_LEFT / ROOM_RIGHT
+  // enum: APARTMENT, ROOM
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "landlord_id", nullable = false)

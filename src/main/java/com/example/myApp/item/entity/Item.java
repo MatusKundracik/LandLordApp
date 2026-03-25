@@ -4,6 +4,7 @@ import com.example.myApp.apartment.entity.Apartment;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Item {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

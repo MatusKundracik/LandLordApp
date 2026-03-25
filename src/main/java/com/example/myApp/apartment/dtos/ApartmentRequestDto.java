@@ -18,7 +18,7 @@ public class ApartmentRequestDto {
   private String postalCode;
   private String apartmentNumber;
   private Integer floor;
-  private BigDecimal areaSqm;
+  private Double areaSqm;
   private String buildingRegNumber;
   private String cadastralArea;
   private String titleDeedNumber;
