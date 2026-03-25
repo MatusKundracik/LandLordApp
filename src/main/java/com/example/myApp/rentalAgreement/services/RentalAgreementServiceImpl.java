@@ -100,13 +100,7 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     return rentalAgreementMapper.toDto(agreement);
   }
 
-  public List<RentalAgreementResponseDto> getRentalAgreementsByLandlord(String email) {
-    Landlord landlord = landlordService.getLandlordByEmail(email);
 
-    return rentalAgreementRepository.getAllRentalAgreementsByLandlord(landlord).stream()
-        .map(rentalAgreementMapper::toDto)
-        .collect(Collectors.toList());
-  }
 
   public void deleteRentalAgreement(long id, String email) {
 
@@ -121,12 +115,21 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     rentalAgreementRepository.deleteById(id);
   }
 
-  @Override
-  public List<RentalAgreementResponseDto> getRentalAgreementsByTenant(String email) {
-    Tenant tenant = tenantService.getTenantByEmail(email);
+    @Override
+    public List<RentalAgreementResponseDto> getRentalAgreements(String email) {
+        if (landlordRepository.existsByUserEmail(email)) {
+            Landlord landlord = landlordService.getLandlordByEmail(email);
+            return rentalAgreementRepository.getAllRentalAgreementsByLandlord(landlord).stream()
+                    .map(rentalAgreementMapper::toDto)
+                    .collect(Collectors.toList());
+        } else {
+            Tenant tenant = tenantService.getTenantByEmail(email);
+            return rentalAgreementRepository.getAllRentalAgreementsByTenant(tenant).stream()
+                    .map(rentalAgreementMapper::toDto)
+                    .collect(Collectors.toList());
+        }
+    }
 
-    return rentalAgreementRepository.getAllRentalAgreementsByTenant(tenant).stream()
-        .map(rentalAgreementMapper::toDto)
-        .collect(Collectors.toList());
-  }
+
+
 }

@@ -2,6 +2,8 @@ package com.example.myApp.item.services;
 
 import com.example.myApp.item.dtos.ItemRequestDto;
 import com.example.myApp.item.dtos.ItemResponseDto;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public interface ItemService {
@@ -10,11 +12,12 @@ public interface ItemService {
 
   ItemResponseDto getItemById(long id);
 
-  List<ItemResponseDto> getAllItemsByApartment(long apartmentId);
-
   ItemResponseDto updateItem(long id, ItemRequestDto itemRequestDto);
 
   void deleteItem(long id);
 
-  List<ItemResponseDto> getAllItemsForTenantByApartment(long apartmentId, String email);
+    ItemResponseDto uploadImage(long id, MultipartFile file, String email);
+
+    List<ItemResponseDto> getAllItemsByApartmentForUser(long apartmentId, String email);
+
 }
