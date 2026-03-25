@@ -15,36 +15,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LandlordServiceImpl implements LandlordService {
 
-    public final LandlordRepository landlordRepository;
-    public final LandlordMapper landlordMapper;
+    private final LandlordRepository landlordRepository;  // ← private nie public
+    private final LandlordMapper landlordMapper;
 
     @Override
     public List<LandlordResponseDto> getAllLandlords() {
-
-        List<Landlord> landLordsList = landlordRepository.findAll();
-        List<LandlordResponseDto> responseDtos = new ArrayList<>();
-        for (Landlord landlord : landLordsList) {
-            responseDtos.add(landlordMapper.toDto(landlord));
-        }
-
-        return responseDtos;
+        return landlordRepository.findAll()
+                .stream()
+                .map(landlordMapper::toDto)
+                .toList();
     }
 
     @Override
     public LandlordResponseDto getLandlordById(Long id) {
-        Landlord landlord = landlordRepository.findById(id).orElseThrow(() -> new RuntimeException("Landlord not found"));
-
+        Landlord landlord = landlordRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Landlord not found"));
         return landlordMapper.toDto(landlord);
-    }
-
-    @Override
-    public LandlordResponseDto createLandlord(LandlordRequestDto dto) {
-
-
-
-        Landlord landlord = landlordMapper.toEntity(dto);
-        Landlord savedLandlord = landlordRepository.save(landlord);
-        return landlordMapper.toDto(savedLandlord);
     }
 
     @Override
@@ -60,6 +46,7 @@ public class LandlordServiceImpl implements LandlordService {
         landlord.setPostalCode(dto.getPostalCode());
         landlord.setCountry(dto.getCountry());
         landlord.setTin(dto.getTin());
+        landlord.setPhoneNumber(dto.getPhoneNumber());  // ← pridaj
 
         landlordRepository.save(landlord);
         return landlordMapper.toDto(landlord);
@@ -67,8 +54,9 @@ public class LandlordServiceImpl implements LandlordService {
 
     @Override
     public void deleteLandlord(Long id) {
-    Landlord landlord = landlordRepository.findById(id).orElseThrow(() -> new RuntimeException("Landlord not found"));
-
-    landlordRepository.delete(landlord);
+        Landlord landlord = landlordRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Landlord not found"));
+        landlordRepository.delete(landlord);
     }
 }
+

@@ -10,7 +10,6 @@ public interface LandlordService {
 
     List<LandlordResponseDto> getAllLandlords();
     LandlordResponseDto getLandlordById(Long id);
-    LandlordResponseDto createLandlord(LandlordRequestDto dto);
     LandlordResponseDto updateLandlord(Long id, LandlordRequestDto dto);
     void deleteLandlord(Long id);
 }

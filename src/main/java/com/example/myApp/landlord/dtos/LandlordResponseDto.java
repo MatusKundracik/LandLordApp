@@ -21,4 +21,7 @@ public class LandlordResponseDto {
     private String postalCode;
     private String country;
     private String tin;
+    private String phoneNumber;
+    private String email;
 }
+
