@@ -4,9 +4,11 @@ import com.example.rentalManagement.landlord.services.LandlordService;
 import com.example.rentalManagement.tenant.dtos.TenantRequestDto;
 import com.example.rentalManagement.tenant.dtos.TenantResponseDto;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,6 +24,19 @@ public class LandlordController {
   public ResponseEntity<TenantResponseDto> createTenant(
       @Valid @RequestBody TenantRequestDto tenantRequestDto) {
     return ResponseEntity.ok(landlordService.createTenant(tenantRequestDto));
+  }
+
+  @GetMapping("/tenants")
+  public ResponseEntity<List<TenantResponseDto>> getAllTenantsByLandlord(
+      @AuthenticationPrincipal String email) {
+    return ResponseEntity.ok(landlordService.getAllLandlordTenants(email));
+  }
+
+  @DeleteMapping("/tenants/{id}")
+  public ResponseEntity<Void> deleteTenant(
+      @AuthenticationPrincipal String email, @PathVariable Long id) {
+    landlordService.deleteTenant(email, id);
+    return ResponseEntity.noContent().build();
   }
 
   //  @GetMapping("/profile")

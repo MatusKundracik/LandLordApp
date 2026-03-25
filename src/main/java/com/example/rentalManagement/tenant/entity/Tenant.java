@@ -15,23 +15,22 @@ import lombok.*;
 @Builder
 public class Tenant extends AuditableEntity {
 
-    private String name;
-    private String surname;
-    private LocalDate dateOfBirth;
-    private String street;
-    private String streetNumber;
-    private String city;
-    private String postalCode;
-    private String country;
-    private String phoneNumber;
-    private String email;
+  private String name;
+  private String surname;
+  private LocalDate dateOfBirth;
+  private String street;
+  private String streetNumber;
+  private String city;
+  private String postalCode;
+  private String country;
+  private String phoneNumber;
+  private String email;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = true)
-    private User user;
+  @OneToOne
+  @JoinColumn(name = "user_id", nullable = true)
+  private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "landlord_id", nullable = true)
-    private Landlord landlord;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "landlord_id", nullable = true)
+  private Landlord landlord;
 }
-

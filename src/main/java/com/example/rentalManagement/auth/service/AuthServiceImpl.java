@@ -102,50 +102,53 @@ public class AuthServiceImpl implements AuthService {
     return LoginResponse.builder().token(token).userResponseDto(userDto).build();
   }
 
-    @Override
-    @Transactional
-    public void registerTenant(TenantRegisterRequest request) {
-        log.info("Registering tenant with email: {}", request.getEmail());
+  @Override
+  @Transactional
+  public void registerTenant(TenantRegisterRequest request) {
+    log.info("Registering tenant with email: {}", request.getEmail());
 
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
-        }
-
-        User user =
-                User.builder()
-                        .email(request.getEmail())
-                        .password(passwordEncoder.encode(request.getPassword()))
-                        .role(Role.TENANT)
-                        .isActive(true)
-                        .build();
-
-        User savedUser = userRepository.save(user);
-
-        Tenant tenant =
-                tenantRepository.findByEmailAndUserIsNull(request.getEmail())
-                        .map(existingTenant -> {
-                            existingTenant.setUser(savedUser);
-                            existingTenant.setLandlord(null);
-                            return existingTenant;
-                        })
-                        .orElseGet(() ->
-                                Tenant.builder()
-                                        .name(request.getName())
-                                        .surname(request.getSurname())
-                                        .dateOfBirth(request.getDateOfBirth())
-                                        .street(request.getStreet())
-                                        .streetNumber(request.getStreetNumber())
-                                        .city(request.getCity())
-                                        .postalCode(request.getPostalCode())
-                                        .country(request.getCountry())
-                                        .phoneNumber(request.getPhoneNumber())
-                                        .email(request.getEmail())
-                                        .user(savedUser)
-                                        .landlord(null)
-                                        .build());
-
-        tenantRepository.save(tenant);
-
-        log.info("Tenant registered successfully");
+    if (userRepository.existsByEmail(request.getEmail())) {
+      throw new RuntimeException("Email already exists");
     }
+
+    User user =
+        User.builder()
+            .email(request.getEmail())
+            .password(passwordEncoder.encode(request.getPassword()))
+            .role(Role.TENANT)
+            .isActive(true)
+            .build();
+
+    User savedUser = userRepository.save(user);
+
+    Tenant tenant =
+        tenantRepository
+            .findByEmailAndUserIsNull(request.getEmail())
+            .map(
+                existingTenant -> {
+                  existingTenant.setUser(savedUser);
+                  existingTenant.setLandlord(null);
+                  return existingTenant;
+                })
+            .orElseGet(
+                () ->
+                    Tenant.builder()
+                        .name(request.getName())
+                        .surname(request.getSurname())
+                        .dateOfBirth(request.getDateOfBirth())
+                        .street(request.getStreet())
+                        .streetNumber(request.getStreetNumber())
+                        .city(request.getCity())
+                        .postalCode(request.getPostalCode())
+                        .country(request.getCountry())
+                        .phoneNumber(request.getPhoneNumber())
+                        .email(request.getEmail())
+                        .user(savedUser)
+                        .landlord(null)
+                        .build());
+
+    tenantRepository.save(tenant);
+
+    log.info("Tenant registered successfully");
+  }
 }

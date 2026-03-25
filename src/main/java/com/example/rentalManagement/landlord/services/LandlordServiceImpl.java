@@ -1,6 +1,8 @@
 package com.example.rentalManagement.landlord.services;
 
+import com.example.rentalManagement.exception.AccessDeniedException;
 import com.example.rentalManagement.exception.LandlordNotFoundException;
+import com.example.rentalManagement.exception.TenantNotFoundException;
 import com.example.rentalManagement.landlord.dtos.LandlordRequestDto;
 import com.example.rentalManagement.landlord.dtos.LandlordResponseDto;
 import com.example.rentalManagement.landlord.entity.Landlord;
@@ -13,6 +15,8 @@ import com.example.rentalManagement.tenant.mapper.TenantMapper;
 import com.example.rentalManagement.tenant.repository.TenantRepository;
 import com.example.rentalManagement.user.entity.User;
 import com.example.rentalManagement.user.repository.UserRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -70,17 +74,40 @@ public class LandlordServiceImpl implements LandlordService {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
     Landlord landlord = getLandlordByEmail(email);
 
-      if (userRepository.existsByEmail(tenantRequestDto.getEmail())) {
-          throw new RuntimeException("User with this email already exists");
-      }
+    if (userRepository.existsByEmail(tenantRequestDto.getEmail())) {
+      throw new RuntimeException("User with this email already exists");
+    }
 
-      if (tenantRepository.existsByEmail(tenantRequestDto.getEmail())) {
-          throw new RuntimeException("User with this email already exists");
-      }
+    if (tenantRepository.existsByEmail(tenantRequestDto.getEmail())) {
+      throw new RuntimeException("User with this email already exists");
+    }
 
     Tenant tenant = tenantMapper.toEntity(tenantRequestDto, null, landlord);
     Tenant saved = tenantRepository.save(tenant);
 
     return tenantMapper.toDto(saved);
+  }
+
+  @Override
+  public List<TenantResponseDto> getAllLandlordTenants(String email) {
+
+    Landlord landlord = getLandlordByEmail(email);
+
+    List<Tenant> listOfTenants = tenantRepository.findAllByLandlord(landlord);
+
+    return listOfTenants.stream().map(tenantMapper::toDto).collect(Collectors.toList());
+  }
+
+  @Override
+  public void deleteTenant(String email, Long id) {
+    Landlord landlord = getLandlordByEmail(email);
+
+    Tenant tenant = tenantRepository.findById(id).orElseThrow(TenantNotFoundException::new);
+
+    if (tenant.getLandlord() == null || !tenant.getLandlord().getId().equals(landlord.getId())) {
+      throw new AccessDeniedException();
+    }
+
+    tenantRepository.delete(tenant);
   }
 }
