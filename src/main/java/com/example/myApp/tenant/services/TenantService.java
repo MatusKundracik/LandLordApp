@@ -12,5 +12,5 @@ public interface TenantService {
 
   void deleteMyProfile(String email);
 
-    Tenant getTenantByEmail(String email);
+  Tenant getTenantByEmail(String email);
 }

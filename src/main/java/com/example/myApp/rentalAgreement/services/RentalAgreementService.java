@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface RentalAgreementService {
 
-  RentalAgreementResponseDto createRentalAgreement(RentalAgreementRequestDto requestDto, String email);
+  RentalAgreementResponseDto createRentalAgreement(
+      RentalAgreementRequestDto requestDto, String email);
 
   RentalAgreementResponseDto updateRentalAgreement(
       long id, RentalAgreementRequestDto requestDto, String email);

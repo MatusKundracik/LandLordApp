@@ -10,10 +10,8 @@ import com.example.myApp.item.repository.ItemRepository;
 import com.example.myApp.landlord.entity.Landlord;
 import com.example.myApp.landlord.repository.LandlordRepository;
 import com.example.myApp.rentalAgreement.entity.ContractStatus;
-import com.example.myApp.rentalAgreement.entity.RentalAgreement;
 import com.example.myApp.rentalAgreement.repository.RentalAgreementRepository;
 import com.example.myApp.tenant.entity.Tenant;
-import com.example.myApp.tenant.repository.TenantRepository;
 import com.example.myApp.tenant.services.TenantService;
 import com.example.myApp.user.entity.User;
 import com.example.myApp.user.repository.UserRepository;
@@ -33,9 +31,9 @@ public class ItemServiceImpl implements ItemService {
   private final UserRepository userRepository;
   private final ItemMapper itemMapper;
   private final TenantService tenantService;
-    private final RentalAgreementRepository rentalAgreementRepository;
+  private final RentalAgreementRepository rentalAgreementRepository;
 
-    private Landlord getAuthenticatedLandlord() {
+  private Landlord getAuthenticatedLandlord() {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
     User user =
         userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
@@ -124,24 +122,22 @@ public class ItemServiceImpl implements ItemService {
     itemRepository.delete(item);
   }
 
+  @Override
+  public List<ItemResponseDto> getAllItemsForTenantByApartment(long apartmentId, String email) {
+    Tenant tenant = tenantService.getTenantByEmail(email);
 
-    @Override
-    public List<ItemResponseDto> getAllItemsForTenantByApartment(long apartmentId, String email) {
-        Tenant tenant = tenantService.getTenantByEmail(email);
+    Apartment apartment =
+        apartmentRepository
+            .findById(apartmentId)
+            .orElseThrow(() -> new RuntimeException("Apartment not found"));
 
-        Apartment apartment = apartmentRepository.findById(apartmentId)
-                .orElseThrow(() -> new RuntimeException("Apartment not found"));
+    rentalAgreementRepository
+        .findByTenantAndApartmentAndStatus(tenant, apartment, ContractStatus.ACTIVE)
+        .orElseThrow(
+            () -> new RuntimeException("No active rental agreement found for this apartment"));
 
-        rentalAgreementRepository
-                .findByTenantAndApartmentAndStatus(tenant, apartment, ContractStatus.ACTIVE)
-                .orElseThrow(() -> new RuntimeException("No active rental agreement found for this apartment"));
-
-        return itemRepository.findAllByApartment(apartment)
-                .stream()
-                .map(itemMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-
-
+    return itemRepository.findAllByApartment(apartment).stream()
+        .map(itemMapper::toDto)
+        .collect(Collectors.toList());
+  }
 }
