@@ -18,6 +18,7 @@ public class Landlord extends AuditableEntity {
   private String surname;
   private LocalDate dateOfBirth;
   private String street;
+  private String streetNumber;
   private String city;
   private String postalCode;
   private String country;

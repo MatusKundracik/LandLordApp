@@ -32,6 +32,7 @@ public class LandlordServiceImpl implements LandlordService {
     if (dto.getSurname() != null) landlord.setSurname(dto.getSurname());
     if (dto.getDateOfBirth() != null) landlord.setDateOfBirth(dto.getDateOfBirth());
     if (dto.getStreet() != null) landlord.setStreet(dto.getStreet());
+    if (dto.getStreetNumber() != null) landlord.setStreetNumber(dto.getStreetNumber());
     if (dto.getCity() != null) landlord.setCity(dto.getCity());
     if (dto.getPostalCode() != null) landlord.setPostalCode(dto.getPostalCode());
     if (dto.getCountry() != null) landlord.setCountry(dto.getCountry());
