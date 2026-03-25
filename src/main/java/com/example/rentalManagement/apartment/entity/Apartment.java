@@ -21,12 +21,12 @@ public class Apartment extends AuditableEntity {
   private String streetNumber;
   private String city;
   private String postalCode;
-  private String apartmentNumber; // "64"
-  private Integer floor; // 4
+  private String apartmentNumber;
+  private Integer floor;
   private Double areaSqm;
   private String buildingRegNumber; // Súpisné číslo: "1672"
-  private String cadastralArea; // "Letná"
-  private String titleDeedNumber; // LV: "12162"
+  private String cadastralArea;
+  private String titleDeedNumber;
 
   @Enumerated(EnumType.STRING)
   private UnitType unitType;

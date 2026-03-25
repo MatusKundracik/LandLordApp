@@ -68,7 +68,6 @@ public class ApartmentController {
     return ResponseEntity.ok(itemService.getAllItemsByApartmentForUser(apartmentId, email));
   }
 
-  // ZMEŇ - odober tenantId z URL
   @PostMapping("/{apartmentId}/agreement")
   public ResponseEntity<RentalAgreementResponseDto> createAgreement(
       @PathVariable Long apartmentId,

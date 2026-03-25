@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 public class LandlordRegisterRequest {
 
-  // User polia
   @NotBlank(message = "Email is required")
   @Email(message = "Invalid email format")
   private String email;
@@ -18,7 +17,6 @@ public class LandlordRegisterRequest {
   @Size(min = 6, message = "Password must be at least 6 characters")
   private String password;
 
-  // Landlord polia
   @NotBlank(message = "Name is required")
   private String name;
 

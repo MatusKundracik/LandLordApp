@@ -12,5 +12,5 @@ public interface LandlordService {
 
   void deleteMyProfile(String email);
 
-  Landlord getLandlordByEmail(String email); // ← táto ostáva, používa sa interne
+  Landlord getLandlordByEmail(String email);
 }

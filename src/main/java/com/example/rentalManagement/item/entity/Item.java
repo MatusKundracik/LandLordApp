@@ -15,13 +15,13 @@ import lombok.*;
 @Builder
 public class Item extends AuditableEntity {
 
-  private String name; // "Práčka", "Posteľ"...
-  private String description; // "Nový", "Opotrebovaný"
+  private String name;
+  private String description;
   private Integer quantity;
-  private BigDecimal value; // Hodnota pre odpočet z depozitu
+  private BigDecimal value; // Hodnota
   private String imageUrl;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "apartment_id", nullable = false)
-  private Apartment apartment; // @ManyToOne
+  private Apartment apartment;
 }

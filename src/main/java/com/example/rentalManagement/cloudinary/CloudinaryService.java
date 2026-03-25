@@ -34,7 +34,6 @@ public class CloudinaryService {
   }
 
   private String extractPublicId(String imageUrl) {
-    // z URL vytiahne public_id napr. "items/abc123"
     String[] parts = imageUrl.split("/");
     String fileName = parts[parts.length - 1];
     return "items/" + fileName.split("\\.")[0];

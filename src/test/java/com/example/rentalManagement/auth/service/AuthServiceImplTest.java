@@ -48,7 +48,7 @@ class AuthServiceImplTest {
     LoginResponse response = authService.login(new LoginRequest("test@test.com", "password"));
 
     assertThat(response.getToken()).isEqualTo("jwt-token");
-    assertThat(response.getUserResponseDto().getRole()).isEqualTo("LANDLORD"); // ← opravené
+    assertThat(response.getUserResponseDto().getRole()).isEqualTo("LANDLORD");
     assertThat(response.getUserResponseDto().getEmail()).isEqualTo("test@test.com");
   }
 
