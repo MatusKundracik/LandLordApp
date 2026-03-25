@@ -66,7 +66,7 @@ public class ItemServiceImpl implements ItemService {
     Item saved = itemRepository.save(item);
 
     if (file != null && !file.isEmpty()) {
-      return uploadImage(saved.getId(), file, email);
+      return uploadImage(saved.getId(), file, email, apartmentId);
     }
 
     return itemMapper.toDto(saved);
@@ -117,7 +117,7 @@ public class ItemServiceImpl implements ItemService {
     itemRepository.delete(item);
   }
 
-  public ItemResponseDto uploadImage(Long id, MultipartFile file, String email) {
+  public ItemResponseDto uploadImage(Long id, MultipartFile file, String email, Long apartmentId) {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
     Item item = itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
@@ -125,7 +125,7 @@ public class ItemServiceImpl implements ItemService {
     if (!item.getApartment().getLandlord().getId().equals(landlord.getId()))
       throw new AccessDeniedException();
 
-    String imageUrl = cloudinaryService.uploadImage(file);
+    String imageUrl = cloudinaryService.uploadImage(file, apartmentId);
     item.setImageUrl(imageUrl);
 
     return itemMapper.toDto(itemRepository.save(item));

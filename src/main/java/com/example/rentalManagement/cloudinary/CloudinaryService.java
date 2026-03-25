@@ -14,28 +14,30 @@ public class CloudinaryService {
 
   private final Cloudinary cloudinary;
 
-  public String uploadImage(MultipartFile file) {
+  public String uploadImage(MultipartFile file, Long apartmentId) {
     try {
       Map result =
-          cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("folder", "items"));
+          cloudinary
+              .uploader()
+              .upload(file.getBytes(), ObjectUtils.asMap("folder", apartmentId.toString()));
       return (String) result.get("secure_url");
     } catch (IOException e) {
       throw new RuntimeException("Image upload failed");
     }
   }
 
-//  public void deleteImage(String imageUrl) {
-//    try {
-//      String publicId = extractPublicId(imageUrl);
-//      cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
-//    } catch (IOException e) {
-//      throw new RuntimeException("Image delete failed");
-//    }
-//  }
-//
-//  private String extractPublicId(String imageUrl) {
-//    String[] parts = imageUrl.split("/");
-//    String fileName = parts[parts.length - 1];
-//    return "items/" + fileName.split("\\.")[0];
-//  }
+  public void deleteImage(String imageUrl) {
+    try {
+      String publicId = extractPublicId(imageUrl);
+      cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+    } catch (IOException e) {
+      throw new RuntimeException("Image delete failed");
+    }
+  }
+
+  private String extractPublicId(String imageUrl) {
+    String[] parts = imageUrl.split("/");
+    String fileName = parts[parts.length - 1];
+    return "items/" + fileName.split("\\.")[0];
+  }
 }

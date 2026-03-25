@@ -25,6 +25,7 @@ public class ItemMapper {
         .quantity(item.getQuantity())
         .value(item.getValue())
         .apartmentId(item.getApartment().getId())
+        .imageUrl(item.getImageUrl())
         .build();
   }
 }
