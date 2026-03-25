@@ -63,7 +63,7 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
   }
 
   public RentalAgreementResponseDto updateRentalAgreement(
-      long id, RentalAgreementRequestDto requestDto, String email) {
+      Long id, RentalAgreementRequestDto requestDto, String email) {
 
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
@@ -88,7 +88,7 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     return rentalAgreementMapper.toDto(rentalAgreementRepository.save(agreement));
   }
 
-  public RentalAgreementResponseDto getRentalAgreement(long id, String email) {
+  public RentalAgreementResponseDto getRentalAgreement(Long id, String email) {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
     RentalAgreement agreement =
@@ -100,7 +100,7 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     return rentalAgreementMapper.toDto(agreement);
   }
 
-  public void deleteRentalAgreement(long id, String email) {
+  public void deleteRentalAgreement(Long id, String email) {
 
     Landlord landlord = landlordService.getLandlordByEmail(email);
 

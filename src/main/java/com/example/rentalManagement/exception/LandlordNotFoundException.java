@@ -5,7 +5,7 @@ public class LandlordNotFoundException extends RuntimeException {
     super("Landlord not found");
   }
 
-  public LandlordNotFoundException(long id) {
+  public LandlordNotFoundException(Long id) {
     super("Landlord with id " + id + " not found");
   }
 }

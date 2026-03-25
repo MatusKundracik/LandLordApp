@@ -10,11 +10,11 @@ public interface RentalAgreementService {
       RentalAgreementRequestDto requestDto, String email);
 
   RentalAgreementResponseDto updateRentalAgreement(
-      long id, RentalAgreementRequestDto requestDto, String email);
+      Long id, RentalAgreementRequestDto requestDto, String email);
 
-  RentalAgreementResponseDto getRentalAgreement(long id, String email);
+  RentalAgreementResponseDto getRentalAgreement(Long id, String email);
 
-  void deleteRentalAgreement(long id, String email);
+  void deleteRentalAgreement(Long id, String email);
 
   List<RentalAgreementResponseDto> getRentalAgreements(String email);
 }

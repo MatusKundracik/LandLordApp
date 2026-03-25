@@ -52,7 +52,7 @@ public class ApartmentController {
 
   @GetMapping("/{apartmentId}/items")
   public ResponseEntity<List<ItemResponseDto>> getAllItemsByApartment(
-      @PathVariable long apartmentId, @AuthenticationPrincipal String email) {
+      @PathVariable Long apartmentId, @AuthenticationPrincipal String email) {
     return ResponseEntity.ok(itemService.getAllItemsByApartmentForUser(apartmentId, email));
   }
 }

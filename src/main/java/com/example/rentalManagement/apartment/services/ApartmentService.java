@@ -8,11 +8,11 @@ public interface ApartmentService {
 
   ApartmentResponseDto createApartment(ApartmentRequestDto apartmentRequestDto);
 
-  ApartmentResponseDto getApartmentById(long id);
+  ApartmentResponseDto getApartmentById(Long id);
 
   List<ApartmentResponseDto> getAllApartments(String email);
 
-  ApartmentResponseDto updateApartment(long id, ApartmentRequestDto apartmentRequestDto);
+  ApartmentResponseDto updateApartment(Long id, ApartmentRequestDto apartmentRequestDto);
 
-  void deleteApartment(long id);
+  void deleteApartment(Long id);
 }

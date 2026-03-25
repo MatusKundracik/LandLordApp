@@ -26,7 +26,7 @@ public class RentalAgreementController {
 
   @PatchMapping("/{id}")
   public ResponseEntity<RentalAgreementResponseDto> updateRentalAgreement(
-      @PathVariable long id,
+      @PathVariable Long id,
       @RequestBody RentalAgreementRequestDto requestDto,
       @AuthenticationPrincipal String email) {
     return ResponseEntity.ok(rentalAgreementService.updateRentalAgreement(id, requestDto, email));
@@ -34,7 +34,7 @@ public class RentalAgreementController {
 
   @GetMapping("/{id}")
   public ResponseEntity<RentalAgreementResponseDto> getRentalAgreement(
-      @PathVariable long id, @AuthenticationPrincipal String email) {
+      @PathVariable Long id, @AuthenticationPrincipal String email) {
     return ResponseEntity.ok(rentalAgreementService.getRentalAgreement(id, email));
   }
 
@@ -46,7 +46,7 @@ public class RentalAgreementController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteRentalAgreement(
-      @PathVariable long id, @AuthenticationPrincipal String email) {
+      @PathVariable Long id, @AuthenticationPrincipal String email) {
     rentalAgreementService.deleteRentalAgreement(id, email);
     return ResponseEntity.noContent().build();
   }

@@ -46,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
     return landlordRepository.findByUser(user).orElseThrow(LandlordNotFoundException::new);
   }
 
-  private Apartment getApartmentForLandlord(long apartmentId, Landlord landlord) {
+  private Apartment getApartmentForLandlord(Long apartmentId, Landlord landlord) {
     Apartment apartment =
         apartmentRepository.findById(apartmentId).orElseThrow(ItemNotFoundException::new);
     if (!apartment.getLandlord().getId().equals(landlord.getId())) {
@@ -67,7 +67,7 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public ItemResponseDto getItemById(long id) {
+  public ItemResponseDto getItemById(Long id) {
     Landlord landlord = getAuthenticatedLandlord();
 
     Item item = itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
@@ -80,7 +80,7 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public ItemResponseDto updateItem(long id, ItemRequestDto itemRequestDto) {
+  public ItemResponseDto updateItem(Long id, ItemRequestDto itemRequestDto) {
     Landlord landlord = getAuthenticatedLandlord();
 
     Item item = itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
@@ -99,7 +99,7 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public void deleteItem(long id) {
+  public void deleteItem(Long id) {
     Landlord landlord = getAuthenticatedLandlord();
 
     Item item = itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
@@ -112,7 +112,7 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public ItemResponseDto uploadImage(long id, MultipartFile file, String email) {
+  public ItemResponseDto uploadImage(Long id, MultipartFile file, String email) {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
     Item item = itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
@@ -127,7 +127,7 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public List<ItemResponseDto> getAllItemsByApartmentForUser(long apartmentId, String email) {
+  public List<ItemResponseDto> getAllItemsByApartmentForUser(Long apartmentId, String email) {
     Apartment apartment =
         apartmentRepository.findById(apartmentId).orElseThrow(ApartmentNotFoundException::new);
 
