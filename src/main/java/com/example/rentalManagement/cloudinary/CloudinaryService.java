@@ -24,18 +24,18 @@ public class CloudinaryService {
     }
   }
 
-  public void deleteImage(String imageUrl) {
-    try {
-      String publicId = extractPublicId(imageUrl);
-      cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
-    } catch (IOException e) {
-      throw new RuntimeException("Image delete failed");
-    }
-  }
-
-  private String extractPublicId(String imageUrl) {
-    String[] parts = imageUrl.split("/");
-    String fileName = parts[parts.length - 1];
-    return "items/" + fileName.split("\\.")[0];
-  }
+//  public void deleteImage(String imageUrl) {
+//    try {
+//      String publicId = extractPublicId(imageUrl);
+//      cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+//    } catch (IOException e) {
+//      throw new RuntimeException("Image delete failed");
+//    }
+//  }
+//
+//  private String extractPublicId(String imageUrl) {
+//    String[] parts = imageUrl.split("/");
+//    String fileName = parts[parts.length - 1];
+//    return "items/" + fileName.split("\\.")[0];
+//  }
 }
