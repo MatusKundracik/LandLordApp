@@ -4,28 +4,34 @@ import com.example.myApp.landlord.dtos.LandlordRequestDto;
 import com.example.myApp.landlord.dtos.LandlordResponseDto;
 import com.example.myApp.landlord.entity.Landlord;
 import org.springframework.stereotype.Component;
+
 @Component
 public class LandlordMapper {
 
-    public LandlordResponseDto toDto(Landlord landlord){
-        LandlordResponseDto landlordResponseDto = new LandlordResponseDto();
-        landlordResponseDto.setId(landlord.getId());
-        landlordResponseDto.setName(landlord.getName());
-        landlordResponseDto.setSurname(landlord.getSurname());
-        landlordResponseDto.setDateOfBirth(landlord.getDateOfBirth());
-        landlordResponseDto.setPermanentResidence(landlord.getPermanentResidence());
-        landlordResponseDto.setTin(landlord.getTin());
-        return  landlordResponseDto;
+    public LandlordResponseDto toDto(Landlord landlord) {
+        return LandlordResponseDto.builder()
+                .id(landlord.getId())
+                .name(landlord.getName())
+                .surname(landlord.getSurname())
+                .dateOfBirth(landlord.getDateOfBirth())
+                .street(landlord.getStreet())
+                .city(landlord.getCity())
+                .postalCode(landlord.getPostalCode())
+                .country(landlord.getCountry())
+                .tin(landlord.getTin())
+                .build();
     }
 
     public Landlord toEntity(LandlordRequestDto dto) {
-        Landlord landlord = new Landlord();
-        landlord.setName(dto.getName());
-        landlord.setSurname(dto.getSurname());
-        landlord.setDateOfBirth(dto.getDateOfBirth());
-        landlord.setPermanentResidence(dto.getPermanentResidence());
-        landlord.setTin(dto.getTin());
-        return landlord;
+        return Landlord.builder()
+                .name(dto.getName())
+                .surname(dto.getSurname())
+                .dateOfBirth(dto.getDateOfBirth())
+                .street(dto.getStreet())
+                .city(dto.getCity())
+                .postalCode(dto.getPostalCode())
+                .country(dto.getCountry())
+                .tin(dto.getTin())
+                .build();
     }
-
 }

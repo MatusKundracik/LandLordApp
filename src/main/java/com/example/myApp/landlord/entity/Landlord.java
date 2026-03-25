@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Landlord {
 
     @Id
@@ -19,6 +20,9 @@ public class Landlord {
     private String name;
     private String surname;
     private LocalDate dateOfBirth;
-    private String permanentResidence;
+    private String street;
+    private String city;
+    private String postalCode;
+    private String country;
     private String tin;
 }
