@@ -12,6 +12,7 @@ import com.example.myApp.rentalAgreement.mapper.RentalAgreementMapper;
 import com.example.myApp.rentalAgreement.repository.RentalAgreementRepository;
 import com.example.myApp.tenant.entity.Tenant;
 import com.example.myApp.tenant.repository.TenantRepository;
+import com.example.myApp.tenant.services.TenantService;
 import com.example.myApp.user.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,8 +31,9 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
   private final ApartmentRepository apartmentRepository;
   private final TenantRepository tenantRepository;
   private final LandlordService landlordService;
+    private final TenantService tenantService;
 
-  public RentalAgreementResponseDto createRentalAgreement(
+    public RentalAgreementResponseDto createRentalAgreement(
       RentalAgreementRequestDto requestDto, String email) {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
@@ -98,7 +100,7 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
     return rentalAgreementMapper.toDto(agreement);
   }
 
-  public List<RentalAgreementResponseDto> getRentalAgreements(String email) {
+  public List<RentalAgreementResponseDto> getRentalAgreementsByLandlord(String email) {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
     return rentalAgreementRepository.getAllRentalAgreementsByLandlord(landlord).stream()
@@ -120,4 +122,13 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
 
     rentalAgreementRepository.deleteById(id);
   }
+
+    @Override
+    public List<RentalAgreementResponseDto> getRentalAgreementsByTenant(String email) {
+        Tenant tenant = tenantService.getTenantByEmail(email);
+
+        return rentalAgreementRepository.getAllRentalAgreementsByTenant(tenant).stream()
+                .map(rentalAgreementMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

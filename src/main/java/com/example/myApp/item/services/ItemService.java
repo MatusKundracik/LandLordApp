@@ -15,4 +15,7 @@ public interface ItemService {
   ItemResponseDto updateItem(long id, ItemRequestDto itemRequestDto);
 
   void deleteItem(long id);
+
+    List<ItemResponseDto> getAllItemsForTenantByApartment(long apartmentId, String email);
+
 }

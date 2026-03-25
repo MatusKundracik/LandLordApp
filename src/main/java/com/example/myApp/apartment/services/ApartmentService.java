@@ -15,4 +15,5 @@ public interface ApartmentService {
   ApartmentResponseDto updateApartment(long id, ApartmentRequestDto apartmentRequestDto);
 
   void deleteApartment(long id);
+
 }
