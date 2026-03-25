@@ -55,16 +55,22 @@ public class ItemServiceImpl implements ItemService {
     return apartment;
   }
 
-  @Override
-  public ItemResponseDto createItem(ItemRequestDto itemRequestDto) {
-    Landlord landlord = getAuthenticatedLandlord();
-    Apartment apartment = getApartmentForLandlord(itemRequestDto.getApartmentId(), landlord);
+    @Override
+    public ItemResponseDto createItem(Long apartmentId, ItemRequestDto itemRequestDto, MultipartFile file, String email) {
+        Landlord landlord = getAuthenticatedLandlord();
+        Apartment apartment = getApartmentForLandlord(apartmentId, landlord);
 
-    Item item = itemMapper.toEntity(itemRequestDto);
-    item.setApartment(apartment);
+        Item item = itemMapper.toEntity(itemRequestDto);
+        item.setApartment(apartment);
+        Item saved = itemRepository.save(item);
 
-    return itemMapper.toDto(itemRepository.save(item));
-  }
+        if (file != null && !file.isEmpty()) {
+            return uploadImage(saved.getId(), file, email);
+        }
+
+        return itemMapper.toDto(saved);
+    }
+
 
   @Override
   public ItemResponseDto getItemById(Long id) {
@@ -111,7 +117,6 @@ public class ItemServiceImpl implements ItemService {
     itemRepository.delete(item);
   }
 
-  @Override
   public ItemResponseDto uploadImage(Long id, MultipartFile file, String email) {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 

@@ -3,17 +3,26 @@ package com.example.rentalManagement.apartment.controller;
 import com.example.rentalManagement.apartment.dtos.ApartmentRequestDto;
 import com.example.rentalManagement.apartment.dtos.ApartmentResponseDto;
 import com.example.rentalManagement.apartment.services.ApartmentService;
+import com.example.rentalManagement.item.dtos.ItemRequestDto;
 import com.example.rentalManagement.item.dtos.ItemResponseDto;
 import com.example.rentalManagement.item.services.ItemService;
 import com.example.rentalManagement.rentalAgreement.dtos.RentalAgreementRequestDto;
 import com.example.rentalManagement.rentalAgreement.dtos.RentalAgreementResponseDto;
 import com.example.rentalManagement.rentalAgreement.services.RentalAgreementService;
 import java.util.List;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/apartments")
@@ -23,6 +32,7 @@ public class ApartmentController {
   private final ApartmentService apartmentService;
   private final ItemService itemService;
   private final RentalAgreementService rentalAgreementService;
+  private final ObjectMapper objectMapper;
 
   @PostMapping
   public ResponseEntity<ApartmentResponseDto> createApartment(
@@ -70,12 +80,28 @@ public class ApartmentController {
         .body(rentalAgreementService.createRentalAgreement(apartmentId, dto, email));
   }
 
-  // PRIDAJ - nový endpoint pre priradenie tenanta
-  @PostMapping("/{apartmentId}/tenants/{tenantId}")
-  public ResponseEntity<ApartmentResponseDto> assignTenant(
-      @PathVariable Long apartmentId,
-      @PathVariable Long tenantId,
-      @AuthenticationPrincipal String email) {
-    return ResponseEntity.ok(apartmentService.assignTenant(apartmentId, tenantId, email));
-  }
+    @PutMapping("/{apartmentId}/tenants/{tenantId}")
+    public ResponseEntity<ApartmentResponseDto> assignTenant(
+            @PathVariable Long apartmentId,
+            @PathVariable Long tenantId,
+            @AuthenticationPrincipal String email) {
+        return ResponseEntity.ok(apartmentService.assignTenant(apartmentId, tenantId, email));
+    }
+
+    @PostMapping(value = "/{apartmentId}/items", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ItemResponseDto> createItem(
+            @PathVariable Long apartmentId,
+            @RequestPart("item")
+            @Parameter(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = ItemRequestDto.class)))
+            ItemRequestDto requestDto,
+            @RequestPart(value = "file", required = false) MultipartFile file,
+            @AuthenticationPrincipal String email) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(itemService.createItem(apartmentId, requestDto, file, email));
+    }
+
+
+
+
 }

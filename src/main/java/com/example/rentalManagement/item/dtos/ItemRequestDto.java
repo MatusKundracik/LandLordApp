@@ -28,6 +28,4 @@ public class ItemRequestDto {
   @NotNull(message = "Value is required")
   private BigDecimal value;
 
-  @NotNull(message = "Apartment is required")
-  private Long apartmentId;
 }

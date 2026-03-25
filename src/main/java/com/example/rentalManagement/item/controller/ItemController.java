@@ -18,10 +18,7 @@ public class ItemController {
 
   private final ItemService itemService;
 
-  @PostMapping
-  public ResponseEntity<ItemResponseDto> createItem(@RequestBody ItemRequestDto requestDto) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(itemService.createItem(requestDto));
-  }
+
 
   @GetMapping("/{id}")
   public ResponseEntity<ItemResponseDto> getItemById(@PathVariable Long id) {
@@ -38,13 +35,5 @@ public class ItemController {
   public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
     itemService.deleteItem(id);
     return ResponseEntity.noContent().build();
-  }
-
-  @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ResponseEntity<ItemResponseDto> uploadImage(
-      @PathVariable Long id,
-      @RequestPart("file") MultipartFile file,
-      @AuthenticationPrincipal String email) {
-    return ResponseEntity.ok(itemService.uploadImage(id, file, email));
   }
 }
