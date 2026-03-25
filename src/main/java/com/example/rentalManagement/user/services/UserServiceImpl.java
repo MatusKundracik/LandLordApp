@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService {
                 .country(tenant.getCountry())
                 .phoneNumber(tenant.getPhoneNumber())
                 .tin(null)
+                .iban(null)
                 .createdAt(tenant.getCreatedAt())
                 .updatedAt(tenant.getUpdatedAt())
                 .build();
@@ -79,6 +80,7 @@ public class UserServiceImpl implements UserService {
                 .country(landlord.getCountry())
                 .phoneNumber(landlord.getPhoneNumber())
                 .tin(landlord.getTin())
+                .iban(landlord.getIban())
                 .createdAt(landlord.getCreatedAt())
                 .updatedAt(landlord.getUpdatedAt())
                 .build();
