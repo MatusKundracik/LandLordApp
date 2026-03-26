@@ -41,11 +41,6 @@ public class TenantController {
     return ResponseEntity.ok(landlordService.searchTenants(query, email));
   }
 
-  @GetMapping("/all")
-  public ResponseEntity<List<TenantResponseDto>> getAllTenantsByApartmentId(
-      Long apartmentId, @AuthenticationPrincipal String email) {
-    return ResponseEntity.ok(tenantService.getAllTenantsByApartmentId(apartmentId, email));
-  }
   //  @GetMapping("/profile")
   //  public ResponseEntity<TenantResponseDto> getMyProfile(@AuthenticationPrincipal String email) {
   //
