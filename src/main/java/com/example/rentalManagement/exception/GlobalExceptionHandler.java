@@ -14,7 +14,8 @@ public class GlobalExceptionHandler {
     LandlordNotFoundException.class,
     ApartmentNotFoundException.class,
     RentalAgreementNotFoundException.class,
-    ItemNotFoundException.class
+    ItemNotFoundException.class,
+    UserNotFoundException.class
   })
   public ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)

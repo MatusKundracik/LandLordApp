@@ -44,6 +44,5 @@ public class TenantMapper {
         .createdAt(tenant.getCreatedAt())
         .updatedAt(tenant.getUpdatedAt())
         .build();
-
   }
 }

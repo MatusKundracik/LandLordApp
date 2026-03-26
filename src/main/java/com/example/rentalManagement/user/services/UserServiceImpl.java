@@ -2,6 +2,7 @@ package com.example.rentalManagement.user.services;
 
 import com.example.rentalManagement.exception.LandlordNotFoundException;
 import com.example.rentalManagement.exception.TenantNotFoundException;
+import com.example.rentalManagement.exception.UserNotFoundException;
 import com.example.rentalManagement.landlord.dtos.LandlordRequestDto;
 import com.example.rentalManagement.landlord.entity.Landlord;
 import com.example.rentalManagement.landlord.mapper.LandlordMapper;
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserResponseDto getMe(String email) {
     User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
     ProfileDto profile =
         switch (user.getRole()) {
@@ -98,7 +99,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserResponseDto updateMe(UpdateProfileRequestDto requestDto, String email) {
     User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
     switch (user.getRole()) {
       case TENANT -> {
@@ -140,7 +141,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public void deleteMe(String email) {
     User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
     switch (user.getRole()) {
       case TENANT -> tenantService.deleteMyProfile(email);

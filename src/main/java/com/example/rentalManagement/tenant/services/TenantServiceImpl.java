@@ -1,6 +1,12 @@
 package com.example.rentalManagement.tenant.services;
 
+import com.example.rentalManagement.apartment.entity.Apartment;
+import com.example.rentalManagement.apartment.repository.ApartmentRepository;
+import com.example.rentalManagement.exception.AccessDeniedException;
+import com.example.rentalManagement.exception.ApartmentNotFoundException;
 import com.example.rentalManagement.exception.TenantNotFoundException;
+import com.example.rentalManagement.exception.UserNotFoundException;
+import com.example.rentalManagement.landlord.entity.Landlord;
 import com.example.rentalManagement.landlord.repository.LandlordRepository;
 import com.example.rentalManagement.landlord.services.LandlordService;
 import com.example.rentalManagement.tenant.dtos.TenantRequestDto;
@@ -10,6 +16,8 @@ import com.example.rentalManagement.tenant.mapper.TenantMapper;
 import com.example.rentalManagement.tenant.repository.TenantRepository;
 import com.example.rentalManagement.user.entity.User;
 import com.example.rentalManagement.user.repository.UserRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,11 +31,12 @@ public class TenantServiceImpl implements TenantService {
   private final TenantMapper tenantMapper;
   private final LandlordRepository landlordRepository;
   private final LandlordService landlordService;
+  private final ApartmentRepository apartmentRepository;
 
   private User getUserByEmail(String email) {
     return userRepository
         .findByEmail(email)
-        .orElseThrow(() -> new RuntimeException("User not found"));
+        .orElseThrow(UserNotFoundException::new);
   }
 
   private Tenant getTenantByUser(User user) {
@@ -75,15 +84,23 @@ public class TenantServiceImpl implements TenantService {
 
   public Tenant getTenantByEmail(String email) {
     User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     return tenantRepository.findByUserId(user.getId()).orElseThrow(TenantNotFoundException::new);
   }
-  //
-  //  public List<Tenant> getAllTenantsByApartmentId(Long apartmentId, String email) {
-  //
-  //      Landlord landlord = landlordService.getLandlordByEmail(email);
-  //
-  //      return List<Tenant> listOfTenantsInApartment =
-  // tenantRepository.getAllTenantsByApartmentId(apartmentId);
-  //  }
+
+  @Override
+  public List<TenantResponseDto> getAllTenantsByApartmentId(Long apartmentId, String email) {
+    Landlord landlord = landlordService.getLandlordByEmail(email);
+
+    Apartment apartment =
+        apartmentRepository.findById(apartmentId).orElseThrow(ApartmentNotFoundException::new);
+
+    if (!apartment.getLandlord().getId().equals(landlord.getId())) {
+      throw new AccessDeniedException();
+    }
+
+    return tenantRepository.findAllByApartmentId(apartmentId).stream()
+        .map(tenantMapper::toDto)
+        .collect(Collectors.toList());
+  }
 }

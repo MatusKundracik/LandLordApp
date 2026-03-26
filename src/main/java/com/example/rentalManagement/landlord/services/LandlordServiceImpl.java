@@ -3,6 +3,7 @@ package com.example.rentalManagement.landlord.services;
 import com.example.rentalManagement.exception.AccessDeniedException;
 import com.example.rentalManagement.exception.LandlordNotFoundException;
 import com.example.rentalManagement.exception.TenantNotFoundException;
+import com.example.rentalManagement.exception.UserNotFoundException;
 import com.example.rentalManagement.landlord.dtos.LandlordRequestDto;
 import com.example.rentalManagement.landlord.dtos.LandlordResponseDto;
 import com.example.rentalManagement.landlord.entity.Landlord;
@@ -63,7 +64,7 @@ public class LandlordServiceImpl implements LandlordService {
   @Override
   public Landlord getLandlordByEmail(String email) {
     User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     return landlordRepository
         .findByUserId(user.getId())
         .orElseThrow(LandlordNotFoundException::new);

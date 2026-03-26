@@ -3,6 +3,7 @@ package com.example.rentalManagement.tenant.services;
 import com.example.rentalManagement.tenant.dtos.TenantRequestDto;
 import com.example.rentalManagement.tenant.dtos.TenantResponseDto;
 import com.example.rentalManagement.tenant.entity.Tenant;
+import java.util.List;
 
 public interface TenantService {
 
@@ -13,4 +14,6 @@ public interface TenantService {
   void deleteMyProfile(String email);
 
   Tenant getTenantByEmail(String email);
+
+  List<TenantResponseDto> getAllTenantsByApartmentId(Long apartmentId, String email);
 }

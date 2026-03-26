@@ -42,7 +42,7 @@ public class ItemServiceImpl implements ItemService {
   private Landlord getAuthenticatedLandlord() {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
     User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     return landlordRepository.findByUser(user).orElseThrow(LandlordNotFoundException::new);
   }
 
