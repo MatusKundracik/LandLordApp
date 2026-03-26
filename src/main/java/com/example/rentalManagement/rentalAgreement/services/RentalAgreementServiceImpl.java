@@ -69,6 +69,7 @@ public class RentalAgreementServiceImpl implements RentalAgreementService {
       throw new AccessDeniedException();
 
     if (requestDto.getRentAmount() != null) agreement.setRentAmount(requestDto.getRentAmount());
+    if (requestDto.getStartDate() != null) agreement.setStartDate(requestDto.getStartDate());
     if (requestDto.getEndDate() != null) agreement.setEndDate(requestDto.getEndDate());
     if (requestDto.getPaymentDayOfMonth() != null)
       agreement.setPaymentDayOfMonth(requestDto.getPaymentDayOfMonth());

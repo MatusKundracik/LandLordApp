@@ -146,23 +146,21 @@ public class ApartmentServiceImpl implements ApartmentService {
     if (!apartment.getLandlord().getId().equals(landlord.getId()))
       throw new AccessDeniedException();
 
-
-
     Tenant tenant = tenantRepository.findById(tenantId).orElseThrow(TenantNotFoundException::new);
 
-      if(tenant.getApartment() == null){
-          if (tenant.getUser() == null) {
-              if (tenant.getLandlord().getId().equals(landlord.getId())) {
-                  tenant.setApartment(apartment);
-                  tenantRepository.save(tenant);
-              } else throw new AccessDeniedException();
-          } else {
-              tenant.setApartment(apartment);
-              tenantRepository.save(tenant);
-          }
-      }else{
-          throw new TenantAlreadyHasApartmentException(tenantId);
+    if (tenant.getApartment() == null) {
+      if (tenant.getUser() == null) {
+        if (tenant.getLandlord().getId().equals(landlord.getId())) {
+          tenant.setApartment(apartment);
+          tenantRepository.save(tenant);
+        } else throw new AccessDeniedException();
+      } else {
+        tenant.setApartment(apartment);
+        tenantRepository.save(tenant);
       }
+    } else {
+      throw new TenantAlreadyHasApartmentException(tenantId);
+    }
   }
 
   @Override
