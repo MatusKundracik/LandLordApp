@@ -16,7 +16,6 @@ public class GlobalExceptionHandler {
     RentalAgreementNotFoundException.class,
     ItemNotFoundException.class,
     UserNotFoundException.class,
-    TenantAlreadyHasApartmentException.class
   })
   public ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -34,4 +33,10 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(new ErrorResponse(500, ex.getMessage(), LocalDateTime.now()));
   }
+
+    @ExceptionHandler(TenantAlreadyHasApartmentException.class)
+    public ResponseEntity<ErrorResponse> handleConflict(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse(409, ex.getMessage(), LocalDateTime.now()));
+    }
 }
