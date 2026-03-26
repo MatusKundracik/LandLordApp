@@ -34,9 +34,7 @@ public class TenantServiceImpl implements TenantService {
   private final ApartmentRepository apartmentRepository;
 
   private User getUserByEmail(String email) {
-    return userRepository
-        .findByEmail(email)
-        .orElseThrow(UserNotFoundException::new);
+    return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
   }
 
   private Tenant getTenantByUser(User user) {
@@ -83,8 +81,7 @@ public class TenantServiceImpl implements TenantService {
   }
 
   public Tenant getTenantByEmail(String email) {
-    User user =
-        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     return tenantRepository.findByUserId(user.getId()).orElseThrow(TenantNotFoundException::new);
   }
 

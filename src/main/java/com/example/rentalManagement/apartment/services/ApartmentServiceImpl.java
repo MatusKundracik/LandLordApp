@@ -16,6 +16,7 @@ import com.example.rentalManagement.rentalAgreement.repository.RentalAgreementRe
 import com.example.rentalManagement.tenant.entity.Tenant;
 import com.example.rentalManagement.tenant.repository.TenantRepository;
 import com.example.rentalManagement.tenant.services.TenantService;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -155,5 +156,33 @@ public class ApartmentServiceImpl implements ApartmentService {
       tenantRepository.save(tenant);
     }
     return apartmentMapper.toDto(apartment);
+  }
+
+  @Override
+  @Transactional
+  public void expelTenant(Long apartmentId, Long tenantId, String email) {
+    Landlord landlord = landlordService.getLandlordByEmail(email);
+
+    Apartment apartment =
+        apartmentRepository.findById(apartmentId).orElseThrow(ApartmentNotFoundException::new);
+
+    if (!apartment.getLandlord().getId().equals(landlord.getId()))
+      throw new AccessDeniedException();
+
+    Tenant tenant = tenantRepository.findById(tenantId).orElseThrow(TenantNotFoundException::new);
+
+    if (tenant.getApartment().getId().equals(apartmentId)) {
+      if (tenant.getUser() == null) {
+        if (tenant.getLandlord().getId().equals(landlord.getId())) {
+          tenant.setApartment(null);
+          tenantRepository.save(tenant);
+        } else throw new AccessDeniedException();
+      } else {
+        tenant.setApartment(null);
+        tenantRepository.save(tenant);
+      }
+    } else {
+      throw new AccessDeniedException();
+    }
   }
 }

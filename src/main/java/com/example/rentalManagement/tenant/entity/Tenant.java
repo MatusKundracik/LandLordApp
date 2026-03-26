@@ -10,7 +10,8 @@ import lombok.*;
 
 @Entity
 @Table(name = "tenants")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

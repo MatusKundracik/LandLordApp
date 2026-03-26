@@ -63,8 +63,7 @@ public class LandlordServiceImpl implements LandlordService {
 
   @Override
   public Landlord getLandlordByEmail(String email) {
-    User user =
-        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     return landlordRepository
         .findByUserId(user.getId())
         .orElseThrow(LandlordNotFoundException::new);

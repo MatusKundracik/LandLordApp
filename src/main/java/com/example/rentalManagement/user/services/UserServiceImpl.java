@@ -37,8 +37,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserResponseDto getMe(String email) {
-    User user =
-        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
     ProfileDto profile =
         switch (user.getRole()) {
@@ -98,8 +97,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserResponseDto updateMe(UpdateProfileRequestDto requestDto, String email) {
-    User user =
-        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
     switch (user.getRole()) {
       case TENANT -> {
@@ -140,8 +138,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void deleteMe(String email) {
-    User user =
-        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
     switch (user.getRole()) {
       case TENANT -> tenantService.deleteMyProfile(email);

@@ -75,7 +75,7 @@ public class ApartmentController {
         .body(rentalAgreementService.createRentalAgreement(apartmentId, dto, email));
   }
 
-  @PutMapping("/{apartmentId}/tenants/{tenantId}")
+  @PatchMapping("/{apartmentId}/tenants/{tenantId}/assign")
   public ResponseEntity<ApartmentResponseDto> assignTenant(
       @PathVariable Long apartmentId,
       @PathVariable Long tenantId,
@@ -97,5 +97,14 @@ public class ApartmentController {
       @AuthenticationPrincipal String email) {
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(itemService.createItem(apartmentId, requestDto, file, email));
+  }
+
+  @PatchMapping("/{apartmentId}/tenants/{tenantId}/expel")
+  public ResponseEntity<Void> expelTenant(
+      @PathVariable Long apartmentId,
+      @PathVariable Long tenantId,
+      @AuthenticationPrincipal String email) {
+    apartmentService.expelTenant(apartmentId, tenantId, email);
+    return ResponseEntity.noContent().build();
   }
 }

@@ -17,4 +17,6 @@ public interface ApartmentService {
   void deleteApartment(Long id);
 
   ApartmentResponseDto assignTenant(Long apartmentId, Long tenantId, String email);
+
+  void expelTenant(Long apartmentId, Long tenantId, String email);
 }
