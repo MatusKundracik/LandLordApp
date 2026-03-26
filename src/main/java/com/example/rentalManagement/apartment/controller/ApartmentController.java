@@ -112,9 +112,9 @@ public class ApartmentController {
     return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/all")
+  @GetMapping("{apartmentId}/tenants")
   public ResponseEntity<List<TenantResponseDto>> getAllTenantsByApartmentId(
-      Long apartmentId, @AuthenticationPrincipal String email) {
+      @PathVariable Long apartmentId, @AuthenticationPrincipal String email) {
     return ResponseEntity.ok(tenantService.getAllTenantsByApartmentId(apartmentId, email));
   }
 }
