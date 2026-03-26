@@ -80,7 +80,8 @@ public class ApartmentController {
       @PathVariable Long apartmentId,
       @PathVariable Long tenantId,
       @AuthenticationPrincipal String email) {
-    return ResponseEntity.ok(apartmentService.assignTenant(apartmentId, tenantId, email));
+    apartmentService.assignTenant(apartmentId, tenantId, email);
+    return ResponseEntity.noContent().build();
   }
 
   @PostMapping(value = "/{apartmentId}/items", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

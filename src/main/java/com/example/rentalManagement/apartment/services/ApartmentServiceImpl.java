@@ -7,6 +7,7 @@ import com.example.rentalManagement.apartment.mapper.ApartmentMapper;
 import com.example.rentalManagement.apartment.repository.ApartmentRepository;
 import com.example.rentalManagement.exception.AccessDeniedException;
 import com.example.rentalManagement.exception.ApartmentNotFoundException;
+import com.example.rentalManagement.exception.TenantAlreadyHasApartmentException;
 import com.example.rentalManagement.exception.TenantNotFoundException;
 import com.example.rentalManagement.landlord.entity.Landlord;
 import com.example.rentalManagement.landlord.repository.LandlordRepository;
@@ -136,7 +137,7 @@ public class ApartmentServiceImpl implements ApartmentService {
   }
 
   @Override
-  public ApartmentResponseDto assignTenant(Long apartmentId, Long tenantId, String email) {
+  public void assignTenant(Long apartmentId, Long tenantId, String email) {
     Landlord landlord = landlordService.getLandlordByEmail(email);
 
     Apartment apartment =
@@ -145,17 +146,23 @@ public class ApartmentServiceImpl implements ApartmentService {
     if (!apartment.getLandlord().getId().equals(landlord.getId()))
       throw new AccessDeniedException();
 
+
+
     Tenant tenant = tenantRepository.findById(tenantId).orElseThrow(TenantNotFoundException::new);
-    if (tenant.getUser() == null) {
-      if (tenant.getLandlord().getId().equals(landlord.getId())) {
-        tenant.setApartment(apartment);
-        tenantRepository.save(tenant);
-      } else throw new AccessDeniedException();
-    } else {
-      tenant.setApartment(apartment);
-      tenantRepository.save(tenant);
-    }
-    return apartmentMapper.toDto(apartment);
+
+      if(tenant.getApartment() == null){
+          if (tenant.getUser() == null) {
+              if (tenant.getLandlord().getId().equals(landlord.getId())) {
+                  tenant.setApartment(apartment);
+                  tenantRepository.save(tenant);
+              } else throw new AccessDeniedException();
+          } else {
+              tenant.setApartment(apartment);
+              tenantRepository.save(tenant);
+          }
+      }else{
+          throw new TenantAlreadyHasApartmentException(tenantId);
+      }
   }
 
   @Override
