@@ -1,4 +1,4 @@
-package com.example.rentalManagement.Energy.entity;
+package com.example.rentalManagement.energy.entity;
 
 import com.example.rentalManagement.shared.AuditableEntity;
 import jakarta.persistence.*;

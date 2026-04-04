@@ -1,8 +1,8 @@
-package com.example.rentalManagement.Energy.mapper;
+package com.example.rentalManagement.energy.mapper;
 
-import com.example.rentalManagement.Energy.dtos.EnergyReadingRequestDto;
-import com.example.rentalManagement.Energy.dtos.EnergyReadingResponseDto;
-import com.example.rentalManagement.Energy.entity.EnergyReading;
+import com.example.rentalManagement.energy.dtos.EnergyReadingRequestDto;
+import com.example.rentalManagement.energy.dtos.EnergyReadingResponseDto;
+import com.example.rentalManagement.energy.entity.EnergyReading;
 import org.springframework.stereotype.Component;
 
 @Component

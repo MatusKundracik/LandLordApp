@@ -1,4 +1,4 @@
-package com.example.rentalManagement.Energy.entity;
+package com.example.rentalManagement.energy.entity;
 
 public enum PeriodType {
     MONTHLY,

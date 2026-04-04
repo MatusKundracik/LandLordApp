@@ -1,7 +1,7 @@
-package com.example.rentalManagement.Energy.dtos;
+package com.example.rentalManagement.energy.dtos;
 
-import com.example.rentalManagement.Energy.entity.EnergyType;
-import com.example.rentalManagement.Energy.entity.PeriodType;
+import com.example.rentalManagement.energy.entity.EnergyType;
+import com.example.rentalManagement.energy.entity.PeriodType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
