@@ -15,20 +15,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EnergyReadingRequestDto {
 
-    @NotNull(message = "Energy type is required")
-    private EnergyType type;
+  @NotNull(message = "Energy type is required")
+  private EnergyType type;
 
-    @NotNull(message = "Period type is required")
-    private PeriodType periodType;
+  @NotNull(message = "Period type is required")
+  private PeriodType periodType;
 
-    @NotNull(message = "Consumption is required")
-    @Positive(message = "Consumption must be positive")
-    private Double consumption;
+  @NotNull(message = "Consumption is required")
+  @Positive(message = "Consumption must be positive")
+  private Double consumption;
 
-    private Integer month;
+  private Integer month;
 
-    private Integer quarter;
+  private Integer quarter;
 
-    @NotNull(message = "Year is required")
-    private Integer year;
+  @NotNull(message = "Year is required")
+  private Integer year;
 }

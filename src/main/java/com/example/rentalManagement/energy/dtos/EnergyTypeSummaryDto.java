@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnergyTypeSummaryDto {
-    private EnergyType type;
-    private Double totalConsumption;
+  private EnergyType type;
+  private Double totalConsumption;
 }

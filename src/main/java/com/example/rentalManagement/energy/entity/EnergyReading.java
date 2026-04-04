@@ -14,25 +14,24 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class EnergyReading extends AuditableEntity {
 
-    @Column(name = "apartment_id", nullable = false)
-    private Long apartmentId;
+  @Column(name = "apartment_id", nullable = false)
+  private Long apartmentId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    private EnergyType type;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 50)
+  private EnergyType type;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "period_type", nullable = false, length = 20)
-    private PeriodType periodType;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "period_type", nullable = false, length = 20)
+  private PeriodType periodType;
 
-    @Column(nullable = false)
-    private Double consumption;
+  @Column(nullable = false)
+  private Double consumption;
 
-    private Integer month;
+  private Integer month;
 
-    private Integer quarter;
+  private Integer quarter;
 
-    @Column(nullable = false)
-    private Integer year;
-    
+  @Column(nullable = false)
+  private Integer year;
 }
