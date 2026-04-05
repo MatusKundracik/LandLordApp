@@ -45,4 +45,19 @@ public class EnergyReadingServiceImpl implements EnergyReadingService {
 
     return EnergyReadingSummaryDto.builder().apartmentId(apartmentId).totals(totals).build();
   }
+
+  @Override
+  public void deleteEnergyReading(Long apartmentId, Long id) {
+    EnergyReading energyReading =
+        energyReadingRepository
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("Energy reading not found with id: " + id));
+
+    if (!energyReading.getApartmentId().equals(apartmentId)) {
+      throw new RuntimeException(
+          "Energy reading does not belong to apartment with id: " + apartmentId);
+    }
+
+    energyReadingRepository.delete(energyReading);
+  }
 }

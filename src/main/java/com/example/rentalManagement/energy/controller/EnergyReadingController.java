@@ -32,4 +32,10 @@ public class EnergyReadingController {
   public EnergyReadingSummaryDto getEnergyReadingSummary(@PathVariable Long apartmentId) {
     return energyReadingService.getSummaryByApartmentId(apartmentId);
   }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteEnergyReading(@PathVariable Long apartmentId, @PathVariable Long id) {
+    energyReadingService.deleteEnergyReading(apartmentId, id);
+  }
 }

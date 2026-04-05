@@ -12,4 +12,6 @@ public interface EnergyReadingService {
   List<EnergyReadingResponseDto> getAllByApartmentId(Long apartmentId);
 
   EnergyReadingSummaryDto getSummaryByApartmentId(Long apartmentId);
+
+  void deleteEnergyReading(Long apartmentId, Long id);
 }
