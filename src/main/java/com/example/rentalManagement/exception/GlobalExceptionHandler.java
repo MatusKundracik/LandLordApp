@@ -34,7 +34,10 @@ public class GlobalExceptionHandler {
         .body(new ErrorResponse(500, ex.getMessage(), LocalDateTime.now()));
   }
 
-  @ExceptionHandler(TenantAlreadyHasApartmentException.class)
+  @ExceptionHandler({
+    TenantAlreadyHasApartmentException.class,
+    RentalAgreementConflictException.class
+  })
   public ResponseEntity<ErrorResponse> handleConflict(RuntimeException ex) {
     return ResponseEntity.status(HttpStatus.CONFLICT)
         .body(new ErrorResponse(409, ex.getMessage(), LocalDateTime.now()));
